@@ -17,5 +17,26 @@
 	<classpathentry kind="lib" path="lib/jcommon-1.0.17.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.14.jar"/>
 	<classpathentry kind="lib" path="lib/qcchart3djava.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/appbundler-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/guava-18.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/jcalendar.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/jcommon-1.0.17.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/jersey-client.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/jersey-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/jfreechart-1.0.14.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/jgraph.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/jhdf.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/jhdf4obj.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/jhdf5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/jhdf5obj.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/jhdfobj.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/joda-time-2.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/jsr250-api-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/jxl.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/ptplot5.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/qcchart3djava.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/specchio-client.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/specchio-types.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/ujmp-complete-0.2.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
