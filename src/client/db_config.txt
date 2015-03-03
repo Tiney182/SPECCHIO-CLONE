@@ -8,13 +8,8 @@
 #   https, www.specchio.ch, 8181, /specchio, your_user_name, your_password
 #   https, www.specchio.ch, 8181, /specchio, , 
 #   https, www.specchio.ch, 8181, /specchio_test, , 
-<<<<<<< HEAD
-http, localhost, 8080, /SPECCHIO_Web_Application, sdb_admin, Lenneh182
-http, localhost, 8080, /SPECCHIO_Web_Application, sdb_admin, Lenneh182, jdbc/specchio_test
-=======
 http, localhost, 8080, /SPECCHIO_Web_Application, sdb_admin, Lenneh182	
 http, localhost, 8080, /SPECCHIO_Web_Application, sdb_admin, xXY7!fe@, jdbc/specchio_test
->>>>>>> origin/master
 
 
 http, localhost, 8080, /SPECCHIO_Web_Application, JGamon, JGamon
