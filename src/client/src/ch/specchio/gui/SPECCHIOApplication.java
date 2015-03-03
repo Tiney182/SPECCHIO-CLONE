@@ -101,7 +101,7 @@ public class SPECCHIOApplication {
 
 	      //Display the window.
 	      frame.pack();
-	      frame.setSize(new Dimension(700, 350));
+	      frame.setSize(new Dimension(1024, 768));
 
 	      frame.setVisible(true);
 	   }
