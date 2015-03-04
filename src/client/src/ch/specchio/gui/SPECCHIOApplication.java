@@ -101,7 +101,12 @@ public class SPECCHIOApplication {
 
 	      //Display the window.
 	      frame.pack();
-	      frame.setSize(new Dimension(1024, 768));
+	      
+	      //Laptop initialisation
+	      frame.setExtendedState(frame.MAXIMIZED_BOTH);
+	      
+	      //Default initialisation
+//	      frame.setSize(new Dimension(1024, 768));
 
 	      frame.setVisible(true);
 	   }
