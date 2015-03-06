@@ -5,6 +5,8 @@
   	<param-name>ANDSXMLFileLocation</param-name>
 	<param-value>/tmp/specchio_data/files/rifcs</param-value>
   </context-param>
+  
+  <!-- GLASSFISH 3.1.2.2 -->
   <servlet>
     <servlet-name>Jersey</servlet-name>
     <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
@@ -34,6 +36,39 @@
     <servlet-name>Jersey</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
+  
+  <!-- GLASSFISH 4 -->
+  <!--
+  <servlet>
+    <servlet-name>myrest</servlet-name>
+    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>jersey.config.server.provider.packages</param-name>
+      <param-value>ch.specchio.services</param-value>
+    </init-param>
+    <init-param>
+    	<param-name>au.org.ands.researchdata</param-name>
+    	<param-value>enabled</param-value>
+    </init-param>
+    <init-param>
+    	<param-name>END_USER_LICENSE</param-name>
+    	<param-value>disabled</param-value>
+    </init-param>
+    <init-param>
+    	<param-name>END_USER_LICENSE_SHORT_TEXT</param-name>
+    	<param-value>YOU ACKNOWLEDGE THAT YOU HAVE READ THE PROGRAM LICENSE AGREEMENT, UNDERSTAND IT AND AGREE TO BE BOUND BY ITS TERMS AND CONDITIONS.  YOU FURTHER AGREE THAT IT IS THE COMPLETE AND EXCLUSIVE STATEMENT OF THE AGREEMENT BETWEEN YOU AND UNIVERSITY OF ZURICH WHICH SUPERSEDES ANY PROPOSAL OR PRIOR AGREEMENT, ORAL OR WRITTEN, AND ANY OTHER COMMUNICATIONS RELATING TO THE SUBJECT MATTER OF THIS AGREEMENT.</param-value>
+    </init-param>
+    <init-param>
+    	<param-name>END_USER_LICENSE_URL</param-name>
+    	<param-value>http://specchio.ch/SPECCHIO_UZH_License_V1.pdf</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>myrest</servlet-name>
+    <url-pattern>/rest/</url-pattern>
+  </servlet-mapping> -->
+  
   <login-config>
     <auth-method>BASIC</auth-method>
     <realm-name>specchioRealm</realm-name>
