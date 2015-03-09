@@ -47,7 +47,9 @@ public class SPECCHIOApplication {
 	public Component createComponents() {
 
 		JPanel pane = new JPanel(new BorderLayout());
-		OperationsPane op = OperationsPane.getInstance();
+		//readd this code and change all ot variables to op when returning to operations pane 
+//		OperationsPane op = OperationsPane.getInstance();
+		OperationsTest ot = OperationsTest.getInstance();
 		ImageIcon i =new ImageIcon(SPECCHIOClientFactory.getApplicationConfFilename("SPECCHIO_Icon_Mid_Res_small.jpg"));
 		  
 		JLabel test = new JLabel("Spectral Database System", i, JLabel.CENTER);
@@ -61,9 +63,11 @@ public class SPECCHIOApplication {
 		mid_pane.add(BorderLayout.CENTER, test);
 
 		pane.add(mid_pane, BorderLayout.WEST);
-		pane.add(op, BorderLayout.CENTER);
-			
-		op.validate();
+		pane.add(ot, BorderLayout.CENTER);
+		
+		//Testing that label adds to operations pane.
+//		ot.add_label();	
+		ot.validate();
 	      
 		pane.validate();
 
@@ -107,7 +111,7 @@ public class SPECCHIOApplication {
 	      
 	      //Default initialisation
 //	      frame.setSize(new Dimension(1024, 768));
-
+	      
 	      frame.setVisible(true);
 	   }
 

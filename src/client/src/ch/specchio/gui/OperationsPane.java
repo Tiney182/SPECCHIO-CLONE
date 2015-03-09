@@ -4,7 +4,6 @@ package ch.specchio.gui;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneLayout;
@@ -70,8 +69,12 @@ public class OperationsPane extends JScrollPane {
 		  spl = new ScrollPaneLayout();
 		  setLayout(spl);
 		  
+		  
 		  rep_cnt = 0;
 		  frame = new ReportContainer();
+		  
+//		  JLabel jlb = new JLabel("Hello");
+//		  frame.add(jlb);
 		  
 		  constraints = new GridBagConstraints();
 		  constraints.gridwidth = 1;
@@ -103,12 +106,4 @@ public class OperationsPane extends JScrollPane {
 		   ReportRemover rr = new ReportRemover(this, frame, rep);		   
 		   rr.start();		   
 	   }
-	   
-	   public void add_label()
-	   {
-		   JLabel jl = new JLabel("Hello");
-		   OperationsPane.getInstance();
-		   
-	   }
-
-}
+	}

@@ -390,7 +390,6 @@ class MainMenu implements ActionListener, ItemListener {
       if(edit_db_config_file.equals(e.getActionCommand()))
       {
     	  File temp = new File(SPECCHIOClientFactory.getDBConfigFilename());
-
     	  try {
     		  Desktop.getDesktop().open(temp);
     		  
