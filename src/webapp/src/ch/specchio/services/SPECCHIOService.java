@@ -181,7 +181,7 @@ public class SPECCHIOService {
 <<<<<<< .merge_file_DGrXfg
 	 * @return the HttpServletRequest object for the current request
 =======
-	 * @return the HttpServletRequest object for the current reuest
+	 * @return the HttpServletRequest object for the current request
 >>>>>>> .merge_file_wDkp6h
 	 */
 	public HttpServletRequest getRequest() {

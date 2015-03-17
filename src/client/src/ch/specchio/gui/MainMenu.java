@@ -70,7 +70,7 @@ class MainMenu implements ActionListener, ItemListener {
    /** menu items accessible to all logged-in users */
    Hashtable<String, JMenuItem> user_menu_items;
    
-   /** menu items accessiable only to administrative users */
+   /** menu items accessible only to administrative users */
    Hashtable<String, JMenuItem> admin_menu_items;
    
    private static MainMenu instance = null;
@@ -85,7 +85,8 @@ class MainMenu implements ActionListener, ItemListener {
 	  // create the menu bar.
       JMenu menu;
       JMenuItem menuItem;
-
+      OperationsTest ot = new OperationsTest();
+      
       menuBar = new JMenuBar();
       menu = new JMenu("Database");
       

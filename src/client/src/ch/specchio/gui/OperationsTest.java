@@ -1,8 +1,14 @@
 package ch.specchio.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -42,19 +48,17 @@ public class OperationsTest extends JScrollPane {
 		  spl = new ScrollPaneLayout();
 		  setLayout(spl);
 		  
-		  
 		  rep_cnt = 0;
 		  frame = new ReportContainer();
-		  
-//		  JLabel jlb = new JLabel("Hello");
-//		  frame.add(jlb);
-		  
+		  frame.setPreferredSize(new Dimension(400, 200));
+		  frame.setBorder(BorderFactory.createLineBorder(Color.pink));
+		  		  		  
 		  constraints = new GridBagConstraints();
 		  constraints.gridwidth = 1;
 		  constraints.gridheight = 1;	
 		  constraints.anchor = GridBagConstraints.NORTHWEST;
 		  constraints.gridx = 0;  
-		  		  
+		  		  		  
 		  getViewport().add(frame);		
 		  
 	   }
@@ -65,10 +69,33 @@ public class OperationsTest extends JScrollPane {
 	      }
 	      return instance;
 	   }
+	   
+	  public void addTestButton(){
+		  JButton button = new JButton("Sup");
+		  frame.add(button);
+		  button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("HEYYY BITCH");		
+			}
+		  });
+	  }
+	   
+	  
+	   
+	   public void add_report(ProgressReportPanel rep)
+	   {
+		   constraints.gridy = rep_cnt;
+		   frame.l.insertComponent(rep, constraints);
+		   rep_cnt++;
+		   this.validate(); // force the redraw on screen
+	   }
+	   
 	   public void add_label(){
-		 JLabel jl = new JLabel("HELLO");
-		   frame.add(jl);
-		   getViewport().add(frame);
+		   JLabel jbl = new JLabel("Hello");
+		   frame.l.insertComponent(jbl, constraints);
+		   this.validate(); //wish this would force update
 	   }
 
 }

@@ -8,4 +8,5 @@
 #   https, www.specchio.ch, 8181, /specchio, your_user_name, your_password
 #   https, www.specchio.ch, 8181, /specchio, , 
 #   https, www.specchio.ch, 8181, /specchio_test, , 
+
 http, localhost, 8080, /SPECCHIO_Web_Application, sdb_admin, Lenneh182	
