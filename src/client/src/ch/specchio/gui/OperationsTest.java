@@ -51,14 +51,13 @@ public class OperationsTest extends JScrollPane {
 		  rep_cnt = 0;
 		  frame = new ReportContainer();
 		  frame.setPreferredSize(new Dimension(400, 200));
-		  frame.setBorder(BorderFactory.createLineBorder(Color.pink));
 		  		  		  
 		  constraints = new GridBagConstraints();
 		  constraints.gridwidth = 1;
 		  constraints.gridheight = 1;	
 		  constraints.anchor = GridBagConstraints.NORTHWEST;
 		  constraints.gridx = 0;  
-		  		  		  
+		  
 		  getViewport().add(frame);		
 		  
 	   }

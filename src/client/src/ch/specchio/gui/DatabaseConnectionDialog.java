@@ -29,7 +29,7 @@ import ch.specchio.client.SPECCHIOClientFactory;
 public class DatabaseConnectionDialog extends JFrame implements ActionListener 
 {
 	private static final long serialVersionUID = 1L;
-	
+	OperationsTest ot;
 	GridbagLayouter l;
 	SPECCHIOClientFactory cf;
 	JTextField server, port, database, user;
@@ -47,7 +47,8 @@ public class DatabaseConnectionDialog extends JFrame implements ActionListener
 		
 		cf = SPECCHIOClientFactory.getInstance();
 		
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		//Should not require this for the new implementation
+//		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		l = new GridbagLayouter(this);
 		
@@ -152,6 +153,9 @@ public class DatabaseConnectionDialog extends JFrame implements ActionListener
 			db_details_panel.remove(descriptor_panel);
 			descriptor_panel = getServerDescriptorPanel((SPECCHIOServerDescriptor) conn_combo.getSelectedItem());
 			db_details_panel.add(descriptor_panel);
+//			ot.add(descriptor_panel);
+//			ot.revalidate();
+//			ot.repaint();
 			db_details_panel.revalidate();
 			db_details_panel.repaint();
 			

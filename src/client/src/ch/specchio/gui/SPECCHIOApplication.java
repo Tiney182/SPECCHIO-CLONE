@@ -11,7 +11,6 @@ import ch.specchio.client.SPECCHIOServerDescriptor;
 
 
 public class SPECCHIOApplication {
-	
 	private static JFrame frame;
 	private static SPECCHIOApplication instance = null;
 	private SPECCHIOClient client = null;
@@ -65,10 +64,6 @@ public class SPECCHIOApplication {
 		pane.add(mid_pane, BorderLayout.WEST);
 		pane.add(ot, BorderLayout.CENTER);
 		
-		//Testing that label adds to operations pane.
-//		ot.add_label();	
-		ot.validate();
-	      
 		pane.validate();
 
 		return pane;

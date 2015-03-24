@@ -74,7 +74,7 @@ class MainMenu implements ActionListener, ItemListener {
    Hashtable<String, JMenuItem> admin_menu_items;
    
    private static MainMenu instance = null;
-
+   OperationsTest ot;
    protected MainMenu() 
    {
 	   // initialise menu item tables
@@ -85,7 +85,6 @@ class MainMenu implements ActionListener, ItemListener {
 	  // create the menu bar.
       JMenu menu;
       JMenuItem menuItem;
-      OperationsTest ot = new OperationsTest();
       
       menuBar = new JMenuBar();
       menu = new JMenu("Database");
