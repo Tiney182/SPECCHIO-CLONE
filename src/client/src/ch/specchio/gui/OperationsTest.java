@@ -3,6 +3,7 @@ package ch.specchio.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.awt.Scrollbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -39,7 +40,7 @@ public class OperationsTest extends JScrollPane {
 	GridBagConstraints constraints;
 	ScrollPaneLayout spl;	
 	ReportContainer frame;
-	
+	DatabaseConnectionDialog dt;
 	//public JFrame application_frame;
 
 	   protected OperationsTest() {
@@ -50,13 +51,15 @@ public class OperationsTest extends JScrollPane {
 		  
 		  rep_cnt = 0;
 		  frame = new ReportContainer();
-		  frame.setPreferredSize(new Dimension(400, 200));
 		  		  		  
 		  constraints = new GridBagConstraints();
 		  constraints.gridwidth = 1;
 		  constraints.gridheight = 1;	
 		  constraints.anchor = GridBagConstraints.NORTHWEST;
 		  constraints.gridx = 0;  
+		  
+//		  test_window();
+//		  addTestButton();
 		  
 		  getViewport().add(frame);		
 		  
@@ -67,6 +70,10 @@ public class OperationsTest extends JScrollPane {
 	         instance = new OperationsTest();
 	      }
 	      return instance;
+	   }
+	   
+	   public void addConnectionDialog(){
+		   frame.add(dt.descriptor_panel);
 	   }
 	   
 	  public void addTestButton(){
@@ -95,6 +102,22 @@ public class OperationsTest extends JScrollPane {
 		   JLabel jbl = new JLabel("Hello");
 		   frame.l.insertComponent(jbl, constraints);
 		   this.validate(); //wish this would force update
+	   }
+	   
+	   public void test_window(){
+		   int i;
+		   JPanel jp = new JPanel();
+		   frame.add(jp);
+		   
+		   for(i = 0;i < 1000; i++){
+			   String num = Integer.toString(i);
+			   JButton number = new JButton(num);
+			   jp.add(number);
+		   }
+	   }
+	   
+	   public void createExternalWindow(){
+		   
 	   }
 
 }

@@ -29,7 +29,7 @@ import ch.specchio.client.SPECCHIOClientFactory;
 public class DatabaseConnectionDialog extends JFrame implements ActionListener 
 {
 	private static final long serialVersionUID = 1L;
-	OperationsTest ot;
+	InternalPane ip = new InternalPane();
 	GridbagLayouter l;
 	SPECCHIOClientFactory cf;
 	JTextField server, port, database, user;
@@ -37,18 +37,17 @@ public class DatabaseConnectionDialog extends JFrame implements ActionListener
 	JComboBox conn_combo;
 	ServerDescriptorPanel descriptor_panel;
 	
-	JPanel db_details_panel;
+//	JPanel db_details_panel;
 	   
 
 	
 	public DatabaseConnectionDialog() throws SPECCHIOClientException, FileNotFoundException, IOException
 	{		
-		super("Connect to database");
+//		super("Connect to database");
 		
 		cf = SPECCHIOClientFactory.getInstance();
 		
-		//Should not require this for the new implementation
-//		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		l = new GridbagLayouter(this);
 		
@@ -101,9 +100,10 @@ public class DatabaseConnectionDialog extends JFrame implements ActionListener
 		// show info
 		constraints.gridx = 0;
 		constraints.gridwidth = 2;
-		db_details_panel = new JPanel();
-		db_details_panel.add(descriptor_panel);
-		l.insertComponent(db_details_panel, constraints);
+//		db_details_panel = new JPanel();
+//		db_details_panel.add(descriptor_panel);
+		
+		l.insertComponent(ip.viewPanel, constraints);		
 		constraints.gridy++;
 		
 		constraints.gridx = 0;
@@ -125,6 +125,8 @@ public class DatabaseConnectionDialog extends JFrame implements ActionListener
 		
 		
 	}
+	
+	
 	
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -150,14 +152,12 @@ public class DatabaseConnectionDialog extends JFrame implements ActionListener
 			constraints.gridx = 0;
 			constraints.gridy = 1;		
 
-			db_details_panel.remove(descriptor_panel);
+			ip.viewPanel.remove(descriptor_panel);
 			descriptor_panel = getServerDescriptorPanel((SPECCHIOServerDescriptor) conn_combo.getSelectedItem());
-			db_details_panel.add(descriptor_panel);
-//			ot.add(descriptor_panel);
-//			ot.revalidate();
-//			ot.repaint();
-			db_details_panel.revalidate();
-			db_details_panel.repaint();
+			ip.viewPanel.add(descriptor_panel);
+			
+			ip.viewPanel.revalidate();
+			ip.viewPanel.repaint();
 			
 			pack();
 			

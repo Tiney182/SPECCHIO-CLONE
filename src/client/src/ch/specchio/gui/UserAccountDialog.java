@@ -110,7 +110,7 @@ public class UserAccountDialog extends JDialog implements ActionListener {
 	public UserAccountDialog(Frame owner, SPECCHIOClient specchio_client, User user) throws SPECCHIOClientException {
 		
 		super(owner, (user == null)? "Create user account" : "Edit user account", false);
-		
+		OperationsTest ot;
 		// save the client object for later
 		this.specchio_client = specchio_client;
 		
