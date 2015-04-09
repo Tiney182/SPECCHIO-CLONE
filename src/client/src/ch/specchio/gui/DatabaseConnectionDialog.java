@@ -37,7 +37,7 @@ public class DatabaseConnectionDialog extends JFrame implements ActionListener
 	JComboBox conn_combo;
 	ServerDescriptorPanel descriptor_panel;
 	
-//	JPanel db_details_panel;
+	JPanel db_details_panel;
 	   
 
 	
@@ -100,10 +100,10 @@ public class DatabaseConnectionDialog extends JFrame implements ActionListener
 		// show info
 		constraints.gridx = 0;
 		constraints.gridwidth = 2;
-//		db_details_panel = new JPanel();
-//		db_details_panel.add(descriptor_panel);
+		db_details_panel = new JPanel();
+		db_details_panel.add(descriptor_panel);
 		
-		l.insertComponent(ip.viewPanel, constraints);		
+		l.insertComponent(db_details_panel, constraints);		
 		constraints.gridy++;
 		
 		constraints.gridx = 0;
@@ -152,12 +152,12 @@ public class DatabaseConnectionDialog extends JFrame implements ActionListener
 			constraints.gridx = 0;
 			constraints.gridy = 1;		
 
-			ip.viewPanel.remove(descriptor_panel);
+			db_details_panel.remove(descriptor_panel);
 			descriptor_panel = getServerDescriptorPanel((SPECCHIOServerDescriptor) conn_combo.getSelectedItem());
-			ip.viewPanel.add(descriptor_panel);
+			db_details_panel.add(descriptor_panel);
 			
-			ip.viewPanel.revalidate();
-			ip.viewPanel.repaint();
+			db_details_panel.revalidate();
+			db_details_panel.repaint();
 			
 			pack();
 			
