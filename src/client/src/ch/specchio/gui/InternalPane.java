@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneLayout;
 
+import ch.specchio.gui.SPECCHIOApplication;
 
 class ReportContainer extends JPanel{
 
@@ -94,7 +95,6 @@ public class InternalPane extends JScrollPane {
 	public void test_panel(){
 		
 		int i;
-		   
 		for(i = 0;i < 1000; i++){
 			   String num = Integer.toString(i);
 			   JButton number = new JButton(num);

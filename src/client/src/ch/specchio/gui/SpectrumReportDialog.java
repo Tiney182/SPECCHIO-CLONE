@@ -26,6 +26,7 @@ import ch.specchio.interfaces.ProgressReportInterface;
 import ch.specchio.metadata.MDE_Controller;
 import ch.specchio.plots.swing.SpectralLinePlot;
 import ch.specchio.plots.swing.SpectralPlot;
+import ch.specchio.proc_modules.MapsProcessing;
 import ch.specchio.spaces.Space;
 import ch.specchio.spaces.SpectralSpace;
 
@@ -74,6 +75,9 @@ public class SpectrumReportDialog extends JFrame implements ActionListener, Chan
 	/** the "dismiss" button */
 	private JButton dismissButton;
 	
+	/** the "maps" button */
+	private JButton show_maps;
+	
 	/** the width of the spectrum plot */
 	private static final int PLOT_WIDTH = 300;
 	
@@ -82,6 +86,9 @@ public class SpectrumReportDialog extends JFrame implements ActionListener, Chan
 	
 	/** text for the "dismiss" button */
 	private static final String DISMISS = "Close";
+	
+	/** text for the "maps" button */
+	private static final String MAPS = "Open Location Data In Google Maps";
 	
 	
 	/**
@@ -129,6 +136,7 @@ public class SpectrumReportDialog extends JFrame implements ActionListener, Chan
 		rootPanel.setLayout(new BoxLayout(rootPanel, BoxLayout.Y_AXIS));
 		getContentPane().add(rootPanel);
 		
+		//thumbnail
 		// add the spectral plot panel
 		spectralPlotPanel = new JPanel();
 		spectralPlotPanel.setMinimumSize(new java.awt.Dimension(PLOT_WIDTH, PLOT_HEIGHT));
@@ -172,6 +180,13 @@ public class SpectrumReportDialog extends JFrame implements ActionListener, Chan
 		dismissButton.addActionListener(this);
 		buttonPanel.add(dismissButton);
 		
+		//add the "maps" button
+		
+		show_maps = new JButton(MAPS);
+		show_maps.setActionCommand(MAPS);
+		show_maps.addActionListener(this);
+		buttonPanel.add(show_maps);
+		
 		if (pr != null) {
 			pr.set_progress(100);
 		}
@@ -199,6 +214,11 @@ public class SpectrumReportDialog extends JFrame implements ActionListener, Chan
 			// dismiss the dialogue
 			setVisible(false);
 			
+		}
+		
+		if (MAPS.equals(event.getActionCommand())) {
+			MapsProcessing m = new MapsProcessing();
+			m.open_window();
 		}
 		
 	}

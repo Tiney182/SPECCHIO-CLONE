@@ -808,7 +808,8 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 	    	  startOperation();
 	    	  try{
 	    		  MapsProcessing m = new MapsProcessing();
-	    		  m.open_window();
+//	    		  m.open_window();
+	    		  m.get_location();
 	    		  
 	    	  }
 	    	  catch(SPECCHIOClientException ex){

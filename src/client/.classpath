@@ -38,5 +38,6 @@
 	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/specchio-client.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/specchio-types.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/External Jars/ujmp-complete-0.2.5.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
