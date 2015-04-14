@@ -52,6 +52,8 @@ public class DatabaseConnectionDialog extends JFrame implements ActionListener
 		l = new GridbagLayouter(this);
 		
 		// create GUI
+//		db_details_panel.add(ip);
+		
 		GridBagConstraints constraints = new GridBagConstraints();
 		
 		constraints.gridwidth = 1;
@@ -120,9 +122,9 @@ public class DatabaseConnectionDialog extends JFrame implements ActionListener
 		cancel.setActionCommand("cancel");
 		cancel.addActionListener(this);		
 		
+		
 		pack();
 		setResizable(false);
-		
 		
 	}
 	

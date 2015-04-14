@@ -71,6 +71,7 @@ import ch.specchio.spaces.Space;
 import ch.specchio.types.Campaign;
 import ch.specchio.types.MatlabAdaptedArrayList;
 import ch.specchio.types.Spectrum;
+import ch.specchio.proc_modules.MapsProcessing;
 
 public class QueryBuilder extends JFrame  implements ActionListener, TreeSelectionListener, ChangeListener, ClipboardOwner, QueryConditionChangeInterface 
 {
@@ -94,6 +95,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 	private JButton spectral_plot;
 	private JButton refl;
 	private JButton publish_collection;
+	private JButton show_maps;
 	
 	JRadioButton split_spaces_by_sensor_and_unit = new JRadioButton("Split spaces by sensor and unit");
 	JRadioButton split_spaces_by_sensor = new JRadioButton("Split spaces by sensor");
@@ -126,6 +128,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		
 		QueryBuilder qb;
 		
+		
 		/**
 		 * 
 		 */
@@ -156,7 +159,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 			super(x,y);
 			
 			this.qb = qb;
-
+			qb.setExtendedState(MAXIMIZED_BOTH);
 			popup = new JPopupMenu();
 			JMenuItem menuItem = new JMenuItem("Copy Matlab-ready query to clipboard");
 		    menuItem.addActionListener(this);
@@ -255,6 +258,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		JPanel query_panel = new JPanel();
 		GridbagLayouter query_panel_l = new GridbagLayouter(query_panel);
 		
+		
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.insets = new Insets(4, 4, 4, 4);
 		constraints.gridheight = 1;
@@ -336,6 +340,13 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		} else {
 			publish_collection = null;
 		}
+		
+		show_maps = new JButton("Show Location In Maps");
+		show_maps.setActionCommand("show_maps");
+		show_maps.addActionListener(this);
+		
+		constraints.gridx++;
+		query_panel_l.insertComponent(show_maps, constraints);
 		
 		// all remaining elements should span whole panel
 		constraints.gridwidth = GridBagConstraints.REMAINDER;
@@ -572,6 +583,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		process.setEnabled(enabled);
 		spectral_plot.setEnabled(enabled);
 		refl.setEnabled(enabled);
+		show_maps.setEnabled(enabled);
 		if (publish_collection != null) {
 			publish_collection.setEnabled(
 					enabled &&
@@ -791,6 +803,28 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 	    	  endOperation();		  
     					  
 	      }
+	      
+	      if("show_maps".equals(e.getActionCommand())){
+	    	  startOperation();
+	    	  try{
+	    		  MapsProcessing m = new MapsProcessing();
+	    		  m.open_window();
+	    		  
+	    	  }
+	    	  catch(SPECCHIOClientException ex){
+	    			  ErrorDialog error = new ErrorDialog(
+	    					  this,
+	    					  "Error",
+	    					  ex.getUserMessage(),
+	    					  ex
+	    				);
+	    			  error.setVisible(true);
+	    		  }
+	    	  	  endOperation();
+	    	  }
+	    	  
+	      
+	
 	      
 	      // TODO The Sandbox is here ...
 	      if ("Test".equals(e.getActionCommand()))

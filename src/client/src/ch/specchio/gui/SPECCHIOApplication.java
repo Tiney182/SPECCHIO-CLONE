@@ -16,7 +16,7 @@ public class SPECCHIOApplication {
 	private SPECCHIOClient client = null;
 	public static String version = "SPECCHIO V3.1.4";
 	public static Float min_db_version = 3.1F;
-	
+	JPanel pane = new JPanel(new BorderLayout());
 	/* progress report in the operations pane */
 	static ProgressReportTextPanel p_rep = null;
 	
@@ -45,12 +45,12 @@ public class SPECCHIOApplication {
 
 	public Component createComponents() {
 
-		JPanel pane = new JPanel(new BorderLayout());
+		
 		//readd this code and change all ot variables to op when returning to operations pane 
-//		OperationsPane op = OperationsPane.getInstance();
+		OperationsPane op = OperationsPane.getInstance();
 //		OperationsTest ot = OperationsTest.getInstance();
 		InternalPane ip = InternalPane.getInstance();
-		ImageIcon i =new ImageIcon(SPECCHIOClientFactory.getApplicationConfFilename("SPECCHIO_Icon_Mid_Res_small.jpg"));
+		ImageIcon i = new ImageIcon(SPECCHIOClientFactory.getApplicationConfFilename("SPECCHIO_Icon_Mid_Res_small.jpg"));
 		  
 		JLabel test = new JLabel("Spectral Database System", i, JLabel.CENTER);
 		test.setVerticalTextPosition(JLabel.BOTTOM);
@@ -63,7 +63,7 @@ public class SPECCHIOApplication {
 		mid_pane.add(BorderLayout.CENTER, test);
 
 		pane.add(mid_pane, BorderLayout.WEST);
-		pane.add(ip, BorderLayout.CENTER);
+//		pane.add(op, BorderLayout.CENTER);
 		
 		pane.validate();
 
@@ -127,6 +127,19 @@ public class SPECCHIOApplication {
 			   }
 		   }
 		   );
+	   }
+	   
+	   public void setInternalPane(SPECCHIOClient client){
+		   this.client = client;
+		   
+		   InternalPane ip = InternalPane.getInstance();
+		   if (client != null){
+			   if (pane != null){
+				   ip.test_panel();
+				   pane.add(ip.frame, BorderLayout.CENTER);
+				   pane.validate();
+			   }
+		   }
 	   }
 	   
 	   

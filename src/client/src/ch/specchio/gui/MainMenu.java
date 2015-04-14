@@ -3,6 +3,7 @@ package ch.specchio.gui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Desktop;
@@ -33,6 +34,8 @@ import ch.specchio.types.attribute;
 
 
 class MainMenu implements ActionListener, ItemListener {
+
+	InternalPane ip = new InternalPane();
 	URI uri;
    JMenuBar menuBar;
    String create_new_campaign = "Create new campaign";
@@ -74,13 +77,13 @@ class MainMenu implements ActionListener, ItemListener {
    Hashtable<String, JMenuItem> admin_menu_items;
    
    private static MainMenu instance = null;
-   OperationsTest ot;
    protected MainMenu() 
    {
 	   // initialise menu item tables
 	   public_menu_items = new Hashtable<String, JMenuItem>();
 	   user_menu_items = new Hashtable<String, JMenuItem>();
 	   admin_menu_items = new Hashtable<String, JMenuItem>();
+
 
 	  // create the menu bar.
       JMenu menu;
@@ -341,7 +344,7 @@ class MainMenu implements ActionListener, ItemListener {
     		  DatabaseConnectionDialog d = new DatabaseConnectionDialog();
     		  d.setLocationRelativeTo(SPECCHIOApplication.getInstance().get_frame());
     		  d.setVisible(true);
-    	  }
+    	 }
     	  catch (SPECCHIOClientException ex) {
     		  JOptionPane.showMessageDialog(
     				  SPECCHIOApplication.getInstance().get_frame(),
