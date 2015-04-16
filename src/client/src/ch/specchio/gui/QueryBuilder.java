@@ -683,7 +683,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 	      
 	      
 	      if(VisualisationSelectionDialog.gonio_hem_expl.equals(e.getActionCommand()) 
-	    		  || VisualisationSelectionDialog.sampling_points_plot.equals(e.getActionCommand())
+	    	  || VisualisationSelectionDialog.sampling_points_plot.equals(e.getActionCommand())
 	    	  || VisualisationSelectionDialog.time_line_plot.equals(e.getActionCommand())
 	    	  || VisualisationSelectionDialog.time_line_expl.equals(e.getActionCommand()))
 	      {	 
@@ -806,22 +806,14 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 	      
 	      if("show_maps".equals(e.getActionCommand())){
 	    	  startOperation();
-	    	  try{
-	    		  MapsProcessing m = new MapsProcessing();
-//	    		  m.open_window();
-	    		  m.get_location();
-	    		  
-	    	  }
-	    	  catch(SPECCHIOClientException ex){
-	    			  ErrorDialog error = new ErrorDialog(
-	    					  this,
-	    					  "Error",
-	    					  ex.getUserMessage(),
-	    					  ex
-	    				);
-	    			  error.setVisible(true);
-	    		  }
-	    	  	  endOperation();
+	    	  
+	    		  MapsThread thread = new MapsThread(
+	    				  get_ids_matching_query(),
+	    				  split_spaces_by_sensor.isSelected(),
+	    				  split_spaces_by_sensor_and_unit.isSelected(),
+	    				  sdb.get_order_by_field());
+	    		  thread.start();
+		    	  endOperation();
 	    	  }
 	    	  
 	      
@@ -1085,6 +1077,83 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		}
 		
 	}
+	
+	/**
+	 * Thread for building specra and returning location data to bbe inserted into google maps
+	 */
+	private class MapsThread extends Thread {
+		
+		/** spectrum identifiers on which to report */
+		private ArrayList<Integer> ids;
+		
+		/** split spaces by sensor */
+		private boolean bySensor;
+		
+		/** split spaces by sensor and unit */
+		private boolean bySensorAndUnit;
+		
+		/** field to order by */
+		private String orderBy;
+		
+		/**
+		 * Constructor.
+		 */
+		public MapsThread(ArrayList<Integer> idsIn, boolean bySensorIn, boolean bySensorAndUnitIn, String orderByIn)
+		{
+			// save parameters for later
+			ids = idsIn;
+			bySensor = bySensorIn;
+			bySensorAndUnit = bySensorAndUnitIn;
+			orderBy = orderByIn;			
+		}
+		
+		/**
+		 * Thread entry point.
+		 */
+		public void run()
+		{
+	  	    // create a progress report
+			ProgressReportDialog pr = new ProgressReportDialog(QueryBuilder.this, "Getting Location Data", false, 20);
+			pr.set_operation("Opening report");
+			pr.set_progress(0);
+			pr.set_indeterminate(true);
+			pr.setVisible(true);
+			
+	    	try {
+	    		
+	    		pr.set_operation("Building Spectra");
+	    		Space spaces[] = specchio_client.getSpaces(
+	    				ids,
+	    				bySensor,
+	    				bySensorAndUnit,
+	    				orderBy
+	    			);
+	   
+	    		ArrayList<Space> spaces_li = new ArrayList<Space>(spaces.length);
+	    		for (Space space : spaces) {
+	    			spaces_li.add(space);
+	    		}
+	    		
+	    		MapsProcessing maps = new MapsProcessing(specchio_client, spaces_li, pr);
+//	    		maps.get_location();
+	    		pr.set_indeterminate(false);
+			    pr.setVisible(false);
+	    	}
+	    	catch (SPECCHIOClientException ex) {
+		  		ErrorDialog error = new ErrorDialog(
+		  				QueryBuilder.this,
+			    		"Error",
+			    		ex.getUserMessage(),
+			    		ex
+				    );
+			  	error.setVisible(true);
+		    }
+	    	
+	    	pr.setVisible(false);
+		}
+		
+	}
+	
 	
 	
 	/**
