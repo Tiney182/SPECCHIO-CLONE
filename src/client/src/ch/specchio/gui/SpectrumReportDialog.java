@@ -278,7 +278,7 @@ public class SpectrumReportDialog extends JFrame implements ActionListener, Chan
 			ArrayList<Integer> spectrumIdList = new ArrayList<Integer>();
 			spectrumIdList.add(spectrumId);
 			mdec.set_spectrum_ids(spectrumIdList);
-
+			
 			// tell the metadata panel to display the new spectrum
 			if (pr != null) {
 				pr.set_operation("Loading metadata");

@@ -47,7 +47,6 @@ import javax.swing.event.TreeSelectionListener;
 
 import au.ands.org.researchdata.RDACollectionDescriptor;
 import au.ands.org.researchdata.ResearchDataAustralia;
-
 import ch.specchio.client.SPECCHIOClient;
 import ch.specchio.client.SPECCHIOClientException;
 import ch.specchio.client.SPECCHIOWebClientException;
@@ -1083,6 +1082,8 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 	 */
 	private class MapsThread extends Thread {
 		
+		private String latitude = null;
+
 		/** spectrum identifiers on which to report */
 		private ArrayList<Integer> ids;
 		
@@ -1104,7 +1105,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 			ids = idsIn;
 			bySensor = bySensorIn;
 			bySensorAndUnit = bySensorAndUnitIn;
-			orderBy = orderByIn;			
+			orderBy = orderByIn;		
 		}
 		
 		/**
@@ -1122,20 +1123,17 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 	    	try {
 	    		
 	    		pr.set_operation("Building Spectra");
-	    		Space spaces[] = specchio_client.getSpaces(
-	    				ids,
-	    				bySensor,
-	    				bySensorAndUnit,
-	    				orderBy
-	    			);
-	   
-	    		ArrayList<Space> spaces_li = new ArrayList<Space>(spaces.length);
-	    		for (Space space : spaces) {
-	    			spaces_li.add(space);
-	    		}
+//	    		specchio_client.getMetaparameterValues(ids, latitude);
+	    		Space spaces[] = specchio_client.getSpaces(ids,	bySensor, bySensorAndUnit, orderBy);
+//	       		ArrayList<Space> spaces_li = new ArrayList<Space>(spaces.length);
+//	    		for (Space space : spaces) {
+//	    			spaces_li.add(space);
+//	    		}
 	    		
-	    		MapsProcessing maps = new MapsProcessing(specchio_client, spaces_li, pr);
+//	    		MapsProcessing maps = new MapsProcessing(specchio_client, spaces_li, pr);
 //	    		maps.get_location();
+	    		latitude = specchio_client.getMetaparameterValues(ids, "Latitude").toString();
+	    		System.out.println(latitude);
 	    		pr.set_indeterminate(false);
 			    pr.setVisible(false);
 	    	}

@@ -17,6 +17,7 @@ import java.util.List;
 
 
 
+
 import ch.specchio.client.SPECCHIOClient;
 import ch.specchio.gui.ProgressReportDialog;
 import ch.specchio.gui.SpectrumMetadataCategoryList;
@@ -42,67 +43,21 @@ public class MapsProcessing {
 		 
 		this.pr = pr;
 		this.specchioClient = specchioClient;
+		int spectraid;
 		
 		spectrumEnum = new ArrayList<Integer>();
 			spectrumEnumSpaces = new ArrayList<Space>();
 			loadedSpaces = new Hashtable<Space, SpectralSpace>();
 			spectralPlots = new Hashtable<SpectralSpace, SpectralPlot>();
-			for (Space space : spaces) {
+			for (Space space : spaces) {			
 				for (Integer id : space.getSpectrumIds()) {
 					spectrumEnum.add(id);
 					spectrumEnumSpaces.add(space);
 					System.out.println(space);
 					System.out.println(id);
 				}
+				
 			}
-			mdec = new MDE_Controller(specchioClient);
-		
 	 	}
 	 
-	 	
-
-
-
-	public void get_location(){
-		 ProgressReportInterface pr;
-		 ArrayList<Space> spaces = new ArrayList<Space>();  
-		 String latitude ;
-		 String longitude;
-		 
-//		if(pr != null){
-//			pr.set_operation("Oh my god he just went in");
-//			pr.set_progress(0);
-//		}
-		
-		}
-//		if(pr != null){
-//			pr.set_operation("God damnit leeroy stick the the plan");
-//			pr.set_progress(100);
-//		}
-			
-
-	 
-       
-
-        public void open_window(){
-        	
-	        if(Desktop.isDesktopSupported()){
-	            Desktop desktop = Desktop.getDesktop();
-	            try {
-	                desktop.browse(new URI(url));
-	            } catch (IOException | URISyntaxException e) {
-	                // TODO Auto-generated catch block
-	                e.printStackTrace();
-	            }
-	        }else{
-	            Runtime runtime = Runtime.getRuntime();
-	            try {
-	                runtime.exec("xdg-open " + url);
-	            } catch (IOException e) {
-	                // TODO Auto-generated catch block
-	                e.printStackTrace();
-	            }
-	        
-        }
-    }
 }
