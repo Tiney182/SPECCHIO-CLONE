@@ -29,35 +29,38 @@ import ch.specchio.spaces.SpectralSpace;
 
 
 public class MapsProcessing {
-	 String url = "http://www.google.com";
-	 private List<Integer> spectrumEnum;
-	 private List<Space> spectrumEnumSpaces;
-	 private Hashtable<Space, SpectralSpace> loadedSpaces;
-	 private Hashtable<SpectralSpace, SpectralPlot> spectralPlots;
-	 private ProgressReportInterface pr;
-	 private SpectrumMetadataCategoryList categoryList;
-	 private MDE_Controller mdec;
-	 private SPECCHIOClient specchioClient;
+	 String url = null;
 	 
-	 public MapsProcessing(SPECCHIOClient specchioClient, ArrayList<Space> spaces, ProgressReportInterface pr){	 	
+	 public MapsProcessing(){
+	 }
+	 
 		 
-		this.pr = pr;
-		this.specchioClient = specchioClient;
-		int spectraid;
-		
-		spectrumEnum = new ArrayList<Integer>();
-			spectrumEnumSpaces = new ArrayList<Space>();
-			loadedSpaces = new Hashtable<Space, SpectralSpace>();
-			spectralPlots = new Hashtable<SpectralSpace, SpectralPlot>();
-			for (Space space : spaces) {			
-				for (Integer id : space.getSpectrumIds()) {
-					spectrumEnum.add(id);
-					spectrumEnumSpaces.add(space);
-					System.out.println(space);
-					System.out.println(id);
-				}
-				
-			}
-	 	}
-	 
+	
+        public void open_maps(String latitude, String longitude){
+        	
+        	url = "https://www.google.co.uk/maps/place/" + latitude + "," + longitude;
+	        if(Desktop.isDesktopSupported()){
+	            Desktop desktop = Desktop.getDesktop();
+	            try {
+	                desktop.browse(new URI(url));
+	            } catch (IOException | URISyntaxException e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            }
+	        }else{
+	            Runtime runtime = Runtime.getRuntime();
+	            try {
+	                runtime.exec("xdg-open " + url);
+	            } catch (IOException e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            }
+	        
+        }
+    }
+
+
+
 }
+
+	 

@@ -218,7 +218,7 @@ public class SpectrumReportDialog extends JFrame implements ActionListener, Chan
 		
 		if (MAPS.equals(event.getActionCommand())) {
 //			MapsProcessing m = new MapsProcessing();
-//			m.open_window();
+//			m.open_maps(latitude, longitude);
 		}
 		
 	}

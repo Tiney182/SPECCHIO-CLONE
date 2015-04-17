@@ -582,7 +582,9 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		process.setEnabled(enabled);
 		spectral_plot.setEnabled(enabled);
 		refl.setEnabled(enabled);
-		show_maps.setEnabled(enabled);
+		show_maps.setEnabled(false);
+		
+	
 		if (publish_collection != null) {
 			publish_collection.setEnabled(
 					enabled &&
@@ -593,6 +595,11 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		this.menu.setEnabled(enabled);
 	}
 	
+	private void setMapsEnabled(ArrayList<Integer> ids){
+		if (ids.size() == 1){
+			show_maps.setEnabled(true);
+		}
+	}
 	
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -806,11 +813,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 	      if("show_maps".equals(e.getActionCommand())){
 	    	  startOperation();
 	    	  
-	    		  MapsThread thread = new MapsThread(
-	    				  get_ids_matching_query(),
-	    				  split_spaces_by_sensor.isSelected(),
-	    				  split_spaces_by_sensor_and_unit.isSelected(),
-	    				  sdb.get_order_by_field());
+	    		  MapsThread thread = new MapsThread(get_ids_matching_query());
 	    		  thread.start();
 		    	  endOperation();
 	    	  }
@@ -930,6 +933,11 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 				//changed(true);
 				
 				setQueryInfoFields(unsorted_spectrum_ids);
+				if (unsorted_spectrum_ids.size() == 1){
+					show_maps.setEnabled(true);
+				} else {
+					show_maps.setEnabled(false);
+				}
 				
 			}
 			else
@@ -1083,30 +1091,19 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 	private class MapsThread extends Thread {
 		
 		private String latitude = null;
+		private String longitude = null;
 
 		/** spectrum identifiers on which to report */
 		private ArrayList<Integer> ids;
 		
-		/** split spaces by sensor */
-		private boolean bySensor;
-		
-		/** split spaces by sensor and unit */
-		private boolean bySensorAndUnit;
-		
-		/** field to order by */
-		private String orderBy;
-		
 		/**
 		 * Constructor.
 		 */
-		public MapsThread(ArrayList<Integer> idsIn, boolean bySensorIn, boolean bySensorAndUnitIn, String orderByIn)
+		public MapsThread(ArrayList<Integer> idsIn)
 		{
 			// save parameters for later
 			ids = idsIn;
-			bySensor = bySensorIn;
-			bySensorAndUnit = bySensorAndUnitIn;
-			orderBy = orderByIn;		
-		}
+			}
 		
 		/**
 		 * Thread entry point.
@@ -1119,21 +1116,24 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 			pr.set_progress(0);
 			pr.set_indeterminate(true);
 			pr.setVisible(true);
+			MapsProcessing maps = new MapsProcessing();
+			
 			
 	    	try {
 	    		
-	    		pr.set_operation("Building Spectra");
-//	    		specchio_client.getMetaparameterValues(ids, latitude);
-	    		Space spaces[] = specchio_client.getSpaces(ids,	bySensor, bySensorAndUnit, orderBy);
-//	       		ArrayList<Space> spaces_li = new ArrayList<Space>(spaces.length);
-//	    		for (Space space : spaces) {
-//	    			spaces_li.add(space);
-//	    		}
-	    		
-//	    		MapsProcessing maps = new MapsProcessing(specchio_client, spaces_li, pr);
-//	    		maps.get_location();
 	    		latitude = specchio_client.getMetaparameterValues(ids, "Latitude").toString();
-	    		System.out.println(latitude);
+	    		longitude = specchio_client.getMetaparameterValues(ids, "Longitude").toString();
+	    		if (latitude == "[]" || longitude == "[]"){
+	    			System.out.println("No Location Data Available for Given Spectra");
+	    		}
+	    		if (latitude != "[]" || longitude != "[]"){
+	    			latitude = latitude.substring(1);
+	    			latitude = latitude.substring(0, latitude.length() - 1);
+	    			longitude = longitude.substring(1);
+	    			longitude = longitude.substring(0, longitude.length() - 1);
+	    			maps.open_maps(latitude, longitude);
+	    		}
+	    		
 	    		pr.set_indeterminate(false);
 			    pr.setVisible(false);
 	    	}
