@@ -595,12 +595,6 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		this.menu.setEnabled(enabled);
 	}
 	
-	private void setMapsEnabled(ArrayList<Integer> ids){
-		if (ids.size() == 1){
-			show_maps.setEnabled(true);
-		}
-	}
-	
 	public void actionPerformed(ActionEvent e) 
 	{
 		
@@ -1086,7 +1080,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 	}
 	
 	/**
-	 * Thread for building specra and returning location data to bbe inserted into google maps
+	 * Thread for building spectra and returning location data to be inserted into google maps
 	 */
 	private class MapsThread extends Thread {
 		
@@ -1118,22 +1112,12 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 			pr.setVisible(true);
 			MapsProcessing maps = new MapsProcessing();
 			
-			
-	    	try {
-	    		
+	    	try {	    		
 	    		latitude = specchio_client.getMetaparameterValues(ids, "Latitude").toString();
 	    		longitude = specchio_client.getMetaparameterValues(ids, "Longitude").toString();
-	    		if (latitude == "[]" || longitude == "[]"){
-	    			System.out.println("No Location Data Available for Given Spectra");
-	    		}
-	    		if (latitude != "[]" || longitude != "[]"){
-	    			latitude = latitude.substring(1);
-	    			latitude = latitude.substring(0, latitude.length() - 1);
-	    			longitude = longitude.substring(1);
-	    			longitude = longitude.substring(0, longitude.length() - 1);
-	    			maps.open_maps(latitude, longitude);
-	    		}
-	    		
+	    		maps.no_location(latitude, longitude);	
+	    		maps.correct_location_data(latitude, longitude);
+	    		pr.set_progress(100);
 	    		pr.set_indeterminate(false);
 			    pr.setVisible(false);
 	    	}
@@ -1146,7 +1130,6 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 				    );
 			  	error.setVisible(true);
 		    }
-	    	
 	    	pr.setVisible(false);
 		}
 		
