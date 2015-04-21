@@ -8,13 +8,18 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import ch.specchio.client.SPECCHIOClient;
+import ch.specchio.proc_modules.MapsProcessing;
 
 public class MapProcessingTest {
 	
+	String latitude = "12"; 
+	String longitude = "11";
+	MapsProcessing maps = new MapsProcessing();
+	
 	SPECCHIOClient specchio_client;
 	@Test
-	public void test_returned_spectra(int latitude, int longitude) {
-		fail("Not yet implemented");
+	public void test_returned_spectra() {
+		maps.correct_location_data(latitude, longitude);
 	}
 
 	

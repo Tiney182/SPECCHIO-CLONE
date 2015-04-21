@@ -84,6 +84,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 
 	JTabbedPane data_selection_tabs;
 	JTextArea SQL_query;
+	JTextArea spectra_thumbnail;
 	JTextField resulting_rows;
 	public SpectralDataBrowser sdb;
 	public JCheckBox show_only_my_data;
@@ -259,7 +260,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		
 		
 		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.insets = new Insets(4, 4, 4, 4);
+		constraints.insets = new Insets(5, 5, 5, 5);
 		constraints.gridheight = 1;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -268,9 +269,18 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = GridBagConstraints.REMAINDER;
-		JPanel SQL_query_panel = new JPanel();
+		
+		JPanel spectra_thumbnail_panel = new JPanel();
 		Border blackline = BorderFactory.createLineBorder(Color.black);
-		TitledBorder tb = BorderFactory.createTitledBorder(blackline, "Matching Spectra");
+		TitledBorder tb = BorderFactory.createTitledBorder(blackline, "Spectra");
+		spectra_thumbnail_panel.setBorder(tb);
+		query_panel_l.insertComponent(spectra_thumbnail_panel, constraints);
+		
+		constraints.gridx = 0;
+		constraints.gridy++;
+		
+		JPanel SQL_query_panel = new JPanel();
+		tb = BorderFactory.createTitledBorder(blackline, "Matching Spectra");
 		SQL_query_panel.setBorder(tb);
 		SQL_query = new SQLQueryArea(this, 8, 50);
 		SQL_query.setLineWrap(true);
@@ -356,7 +366,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		split_group.add(this.split_spaces_by_sensor_and_unit_and_instrument_and_cal);		
 		
 		constraints.gridx = 0;	
-		constraints.gridy = 3;
+		constraints.gridy = 4;
 		
 		query_panel_l.insertComponent(new JLabel("Splitting rules for file export and plotting:"), constraints);	
 		constraints.gridy++;

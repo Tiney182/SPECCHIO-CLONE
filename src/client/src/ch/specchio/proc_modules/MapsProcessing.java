@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 public class MapsProcessing {	 
 	
 		//Basis of beginning of code taken from
@@ -34,7 +37,8 @@ public class MapsProcessing {
         public void no_location(String latitude, String longitude){
         	
         if (latitude == "[]" || longitude == "[]"){
-			System.out.println("No Location Data Available for Given Spectra");
+			JFrame frame = new JFrame();
+			JOptionPane.showMessageDialog(frame, "No Location Data Available for Given Spectra", "Location Error", JOptionPane.ERROR_MESSAGE);
 			}
         }
         
