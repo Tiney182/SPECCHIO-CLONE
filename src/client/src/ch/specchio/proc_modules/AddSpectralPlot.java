@@ -4,31 +4,47 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import com.sun.jersey.spi.StringReader.ValidateDefaultValue;
+
 import ch.specchio.client.SPECCHIOClient;
 import ch.specchio.client.SPECCHIOClientException;
-import ch.specchio.gui.ErrorDialog;
-import ch.specchio.interfaces.ProgressReportInterface;
+import ch.specchio.gui.ProgressReportBarPanel;
+import ch.specchio.gui.ProgressReportDialog;
+import ch.specchio.gui.ProgressReportPanel;
+import ch.specchio.gui.SpectrumMetadataPanel;
 import ch.specchio.plots.swing.SpectralLinePlot;
 import ch.specchio.plots.swing.SpectralPlot;
 import ch.specchio.spaces.Space;
 import ch.specchio.spaces.SpectralSpace;
+import ch.specchio.gui.QueryBuilder;
 
 public class AddSpectralPlot {
 
 	/** the unloaded spaces corresponding to the indices of the spectrum enumeration */
-	private List<Space> spectrumEnumSpaces;	
+	public List<Space> spectrumEnumSpaces;	
 	private Hashtable<Space, SpectralSpace> loadedSpaces;
-	private Hashtable<SpectralSpace, SpectralPlot> spectralPlots;
-	private SPECCHIOClient specchioClient;
-	private List<Integer> spectrumEnum;
-	private int PLOT_HEIGHT = 200;
-	private int PLOT_WIDTH = 300;
+	public Hashtable<SpectralSpace, SpectralPlot> spectralPlots;
+	public SPECCHIOClient specchioClient;
+	public List<Integer> spectrumEnum;
+	public int PLOT_HEIGHT = 200;
+	public int PLOT_WIDTH = 300;
+	public JPanel spectralPlotPanel = new JPanel();
+	public ProgressReportDialog pr;
 	
-	public void AddSpecralPlot(SPECCHIOClient specchioClient, ArrayList<Space> spaces, ProgressReportInterface pr) throws SPECCHIOClientException {
+	public void AddSpecralPlot(SPECCHIOClient specchioClient, ArrayList<Space> spaces,ProgressReportDialog pr, JPanel spectralPlotPanel) throws SPECCHIOClientException {
+		this.specchioClient = specchioClient;
+		this.pr = pr;
+		pr.setVisible(true);
+		pr.set_progress(0);
 		spectrumEnum = new ArrayList<Integer>();
 		spectrumEnumSpaces = new ArrayList<Space>();
 		loadedSpaces = new Hashtable<Space, SpectralSpace>();
 		spectralPlots = new Hashtable<SpectralSpace, SpectralPlot>();
+		JPanel rootPanel = new JPanel();
 		for (Space space : spaces) {
 			for (Integer id : space.getSpectrumIds()) {
 				spectrumEnum.add(id);
@@ -38,9 +54,12 @@ public class AddSpectralPlot {
 		if (spectrumEnum.size() > 0) {
 			setDisplayedIndex(1);
 		}
+		spectralPlotPanel.setMinimumSize(new java.awt.Dimension(PLOT_WIDTH, PLOT_HEIGHT));
+		pr.set_progress(50);
+		rootPanel.add(spectralPlotPanel);
 	}
 	
-	private void setDisplayedIndex(int index) {
+	public void setDisplayedIndex(int index) {
 		
 		
 		try {
@@ -52,6 +71,7 @@ public class AddSpectralPlot {
 			// get the loaded space object for this spectrum
 			if (!loadedSpaces.containsKey(space)) {
 				// need to load the space from the server
+				
 				loadedSpaces.put(space, (SpectralSpace)specchioClient.loadSpace(space));
 			}
 			SpectralSpace ss = loadedSpaces.get(space);
@@ -64,21 +84,27 @@ public class AddSpectralPlot {
 			}
 			SpectralPlot sp = spectralPlots.get(ss);
 			sp.plot(spectrumId);
+			spectralPlotPanel.add(sp);
+			
 			
 			// change the selected spectra
 			ArrayList<Integer> spectrumIdList = new ArrayList<Integer>();
 			spectrumIdList.add(spectrumId);
 			
 			// tell the metadata panel to display the new spectrum
+//			spectrumMetadataPanel.setForm(mdec.getForm());
 			
-			
-			
-			
+			pr.set_progress(100);
+			pr.setVisible(false);
 			
 		}
 		catch (SPECCHIOClientException ex) {
 			// error contacting the server
 		}
+		
+	}
+	
+	public void draw_plot(){
 		
 	}
 

@@ -101,7 +101,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 	private JButton refl;
 	private JButton publish_collection;
 	private JButton show_maps;
-	JPanel spectralPlotPanel;
+	public JPanel spectralPlotPanel;
 	int PLOT_WIDTH = 300;
 	int PLOT_HEIGHT = 200;
 	
@@ -287,6 +287,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		spectralPlotPanel= new JPanel(); 
 		spectralPlotPanel.setMinimumSize(new java.awt.Dimension(PLOT_WIDTH, PLOT_HEIGHT));
 		spectra_thumbnail_panel.add(spectralPlotPanel);
+		spectra_thumbnail_panel.setMinimumSize(new java.awt.Dimension(PLOT_WIDTH,PLOT_HEIGHT));
 
 		
 		constraints.gridx = 0;
@@ -643,7 +644,11 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 //    				  split_spaces_by_sensor_and_unit.isSelected(),
 //    				  sdb.get_order_by_field()
 //	    			  );
-	    	  addSpectra thread = new addSpectra(get_ids_matching_query(), split_spaces_by_sensor.isSelected(), split_spaces_by_sensor_and_unit.isSelected(), sdb.get_order_by_field());
+	    	  addSpectra thread = new addSpectra(
+	    			  get_ids_matching_query(),
+	    			  split_spaces_by_sensor.isSelected(),
+	    			  split_spaces_by_sensor_and_unit.isSelected(),
+	    			  sdb.get_order_by_field());
 	    	  thread.start();
 //	    	  thread1.start();
 	    	  endOperation();
@@ -1132,7 +1137,7 @@ private class addSpectra extends Thread {
 			ids = idsIn;
 			bySensor = bySensorIn;
 			bySensorAndUnit = bySensorAndUnitIn;
-			orderBy = orderByIn;
+			orderBy = orderByIn;			
 		}
 		
 		/**
@@ -1143,14 +1148,14 @@ private class addSpectra extends Thread {
 			//TODO
 	  	    // create a spectralPlot
 			ProgressReportDialog pr = new ProgressReportDialog(QueryBuilder.this, "Spectral Plot", false, 20);
-			pr.set_operation("Building Spectra");
+//			pr.set_operation("Building Spectra");
 			pr.set_progress(0);
-			pr.set_indeterminate(true);
-			pr.setVisible(true);
-			
+//			pr.set_indeterminate(true);
+//			pr.setVisible(true);
+			AddSpectralPlot asp = new AddSpectralPlot();
 	    	try {
 	    		
-	    		pr.set_operation("Identifying spaces");
+//	    		pr.set_operation("Identifying spaces");
 	    		Space spaces[] = specchio_client.getSpaces(
 	    				ids,
 	    				bySensor,
@@ -1162,9 +1167,12 @@ private class addSpectra extends Thread {
 	    		for (Space space : spaces) {
 	    			spaces_li.add(space);
 	    		}
-	    		AddSpectralPlot asp = new AddSpectralPlot();
-	    		asp.AddSpecralPlot(specchio_client, spaces_li, pr);
-	    		pr.set_indeterminate(false);
+	    		
+	    		asp.AddSpecralPlot(specchio_client, spaces_li, pr, spectralPlotPanel);
+	    		spectralPlotPanel.revalidate();
+	    		spectralPlotPanel.repaint();
+//	    		pr.set_indeterminate(false);
+	    		pr.set_progress(100);
 			    pr.setVisible(false);
 	    	}
 	    	catch (SPECCHIOClientException ex) {
@@ -1177,7 +1185,7 @@ private class addSpectra extends Thread {
 			  	error.setVisible(true);
 		    }
 	    	
-	    	pr.setVisible(false);
+//	    	pr.setVisible(false);
 		}
 		
 	}

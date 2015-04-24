@@ -12,7 +12,8 @@ import javax.swing.JOptionPane;
 public class MapsProcessing {	 
 	
 		
-	
+		ScriptEngineManager factory = new ScriptEngineManager();
+		ScriptEngine engine = factory.getEngineByName("JavaScript");
 		
 	
 		//Basis of beginning of code taken from
