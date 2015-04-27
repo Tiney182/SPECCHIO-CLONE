@@ -52,8 +52,6 @@ import ch.specchio.client.SPECCHIOClient;
 import ch.specchio.client.SPECCHIOClientException;
 import ch.specchio.client.SPECCHIOWebClientException;
 import ch.specchio.constants.UserRoles;
-import ch.specchio.plots.swing.SpectralLinePlot;
-import ch.specchio.plots.swing.SpectralPlot;
 import ch.specchio.proc_modules.AddSpectralPlot;
 import ch.specchio.proc_modules.FileOutputManager;
 import ch.specchio.proc_modules.ModuleException;
@@ -71,7 +69,6 @@ import ch.specchio.queries.QueryConditionObject;
 import ch.specchio.queries.RQueryBuilder;
 import ch.specchio.query_builder.QueryController;
 import ch.specchio.spaces.Space;
-import ch.specchio.spaces.SpectralSpace;
 import ch.specchio.types.Campaign;
 import ch.specchio.types.MatlabAdaptedArrayList;
 import ch.specchio.types.Spectrum;
@@ -103,7 +100,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 	private JButton show_maps;
 	public JPanel spectralPlotPanel;
 	public JPanel spectra_thumbnail_panel = new JPanel();
-	int PLOT_WIDTH = 300;
+	int PLOT_WIDTH = 500;
 	int PLOT_HEIGHT = 200;
 	
 	JRadioButton split_spaces_by_sensor_and_unit = new JRadioButton("Split spaces by sensor and unit");
@@ -279,14 +276,13 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		constraints.gridy = 0;
 		constraints.gridwidth = GridBagConstraints.REMAINDER;
 		
-		//TODO
 		Border blackline = BorderFactory.createLineBorder(Color.black);
 		TitledBorder tb = BorderFactory.createTitledBorder(blackline, "Spectra Thumbnail");	
 		spectralPlotPanel = new JPanel(); 
 		spectralPlotPanel.setSize(new java.awt.Dimension(PLOT_WIDTH, PLOT_HEIGHT));
 		
 		//Box size set to 10 pixels either side to correctly show spectra
-		spectralPlotPanel.setPreferredSize(new java.awt.Dimension(PLOT_WIDTH +10 ,PLOT_HEIGHT +10 ));
+		spectralPlotPanel.setPreferredSize(new java.awt.Dimension(PLOT_WIDTH ,PLOT_HEIGHT +10 ));
 //		spectra_thumbnail_panel.repaint();
 		spectra_thumbnail_panel.add(spectralPlotPanel);
 		spectra_thumbnail_panel.setVisible(true);
@@ -643,21 +639,16 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 	      if("show_report".equals(e.getActionCommand()))
 	      {
 	    	  startOperation();
-//	    	  ReportThread thread = new ReportThread(
-//	    			  get_ids_matching_query(),
-//    				  split_spaces_by_sensor.isSelected(),
-//    				  split_spaces_by_sensor_and_unit.isSelected(),
-//    				  sdb.get_order_by_field()
-//	    			  );
-	    	  addSpectra thread = new addSpectra(
+	    	  ReportThread thread = new ReportThread(
 	    			  get_ids_matching_query(),
-	    			  split_spaces_by_sensor.isSelected(),
-	    			  split_spaces_by_sensor_and_unit.isSelected(),
-	    			  sdb.get_order_by_field());
-	    	  thread.start();
-//	    	  thread1.start();
-	    	  endOperation();
-	    	  
+    				  split_spaces_by_sensor.isSelected(),
+    				  split_spaces_by_sensor_and_unit.isSelected(),
+    				  sdb.get_order_by_field()
+	    			  );
+	    	 
+					
+					thread.start();
+					endOperation();  
 	      }
 	      
 	      if("file_export".equals(e.getActionCommand()))
@@ -961,16 +952,24 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 				query.add_join("spectrum", condition);
 				setButtonsEnabled(true);
 				sorted_ids_ready = false;
+				spectralPlotPanel.removeAll();
 				//changed(true);
 				
 				setQueryInfoFields(unsorted_spectrum_ids);
-				if (unsorted_spectrum_ids.size() == 1){
-					show_maps.setEnabled(true);
 					
+				
+				addSpectra thread = new addSpectra(
+		    			  get_ids_matching_query(),
+		    			  split_spaces_by_sensor.isSelected(),
+		    			  split_spaces_by_sensor_and_unit.isSelected(),
+		    			  sdb.get_order_by_field());
+				thread.start();
+				endOperation();
+				if (unsorted_spectrum_ids.size() == 1){
+					show_maps.setEnabled(true);	
 				} else {
 					show_maps.setEnabled(false);
-				}
-				
+				}		
 			}
 			else
 			{
@@ -1015,8 +1014,6 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		// ignore
 		
 	}
-
-
 
 	public void changed(Object source) {
 		
@@ -1154,7 +1151,7 @@ private class addSpectra extends Thread {
 	  	    // create a spectralPlot
 			ProgressReportDialog pr = new ProgressReportDialog(QueryBuilder.this, "Spectral Plot", false, 20);
 //			pr.set_operation("Building Spectra");
-			pr.set_progress(0);
+//			pr.set_progress(0);
 //			pr.set_indeterminate(true);
 //			pr.setVisible(true);
 			AddSpectralPlot asp = new AddSpectralPlot();
@@ -1168,19 +1165,17 @@ private class addSpectra extends Thread {
 	    				orderBy
 	    			);
 	   
+	    		
+	    		
+	    		
 	    		ArrayList<Space> spaces_li = new ArrayList<Space>(spaces.length);
 	    		for (Space space : spaces) {
 	    			spaces_li.add(space);
 	    		}
-	    		
 	    		asp.AddSpecralPlot(specchio_client, spaces_li, pr, spectralPlotPanel);
 	    		spectra_thumbnail_panel.add(spectralPlotPanel);
-	    		spectra_thumbnail_panel.validate();
-	    		spectra_thumbnail_panel.repaint();
-	    		spectralPlotPanel.validate();
-	    		spectralPlotPanel.repaint();
-	    		pr.set_progress(100);
-			    pr.setVisible(false);
+//	    		pr.set_progress(100);
+//			    pr.setVisible(false);
 	    	}
 	    	catch (SPECCHIOClientException ex) {
 		  		ErrorDialog error = new ErrorDialog(
