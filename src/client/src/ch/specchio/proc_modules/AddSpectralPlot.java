@@ -32,7 +32,8 @@ public class AddSpectralPlot {
 	public List<Integer> spectrumEnum;
 	public int PLOT_HEIGHT = 200;
 	public int PLOT_WIDTH = 300;
-	public JPanel spectralPlotPanel = new JPanel();
+	public JPanel rootPanel = new JPanel();
+	public JFrame testFrame = new JFrame();
 	public ProgressReportDialog pr;
 	
 	public void AddSpecralPlot(SPECCHIOClient specchioClient, ArrayList<Space> spaces,ProgressReportDialog pr, JPanel spectralPlotPanel) throws SPECCHIOClientException {
@@ -44,7 +45,6 @@ public class AddSpectralPlot {
 		spectrumEnumSpaces = new ArrayList<Space>();
 		loadedSpaces = new Hashtable<Space, SpectralSpace>();
 		spectralPlots = new Hashtable<SpectralSpace, SpectralPlot>();
-		JPanel rootPanel = new JPanel();
 		for (Space space : spaces) {
 			for (Integer id : space.getSpectrumIds()) {
 				spectrumEnum.add(id);
@@ -54,9 +54,11 @@ public class AddSpectralPlot {
 		if (spectrumEnum.size() > 0) {
 			setDisplayedIndex(1);
 		}
-		spectralPlotPanel.setMinimumSize(new java.awt.Dimension(PLOT_WIDTH, PLOT_HEIGHT));
 		pr.set_progress(50);
-		rootPanel.add(spectralPlotPanel);
+		spectralPlotPanel.validate();
+		spectralPlotPanel.repaint();
+		spectralPlotPanel.add(rootPanel);
+	
 	}
 	
 	public void setDisplayedIndex(int index) {
@@ -84,15 +86,10 @@ public class AddSpectralPlot {
 			}
 			SpectralPlot sp = spectralPlots.get(ss);
 			sp.plot(spectrumId);
-			spectralPlotPanel.add(sp);
-			
-			
+			rootPanel.add(sp);
 			// change the selected spectra
 			ArrayList<Integer> spectrumIdList = new ArrayList<Integer>();
 			spectrumIdList.add(spectrumId);
-			
-			// tell the metadata panel to display the new spectrum
-//			spectrumMetadataPanel.setForm(mdec.getForm());
 			
 			pr.set_progress(100);
 			pr.setVisible(false);

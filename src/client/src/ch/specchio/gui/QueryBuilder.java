@@ -102,6 +102,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 	private JButton publish_collection;
 	private JButton show_maps;
 	public JPanel spectralPlotPanel;
+	public JPanel spectra_thumbnail_panel = new JPanel();
 	int PLOT_WIDTH = 300;
 	int PLOT_HEIGHT = 200;
 	
@@ -268,7 +269,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		
 		
 		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.insets = new Insets(5, 5, 5, 5);
+		constraints.insets = new Insets(4, 4, 4, 4);
 		constraints.gridheight = 1;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -279,19 +280,23 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		constraints.gridwidth = GridBagConstraints.REMAINDER;
 		
 		//TODO
-		JPanel spectra_thumbnail_panel = new JPanel();
 		Border blackline = BorderFactory.createLineBorder(Color.black);
-		TitledBorder tb = BorderFactory.createTitledBorder(blackline, "Spectra");
-		spectra_thumbnail_panel.setBorder(tb);
-		query_panel_l.insertComponent(spectra_thumbnail_panel, constraints);
-		spectralPlotPanel= new JPanel(); 
-		spectralPlotPanel.setMinimumSize(new java.awt.Dimension(PLOT_WIDTH, PLOT_HEIGHT));
+		TitledBorder tb = BorderFactory.createTitledBorder(blackline, "Spectra Thumbnail");	
+		spectralPlotPanel = new JPanel(); 
+		spectralPlotPanel.setSize(new java.awt.Dimension(PLOT_WIDTH, PLOT_HEIGHT));
+		
+		//Box size set to 10 pixels either side to correctly show spectra
+		spectralPlotPanel.setPreferredSize(new java.awt.Dimension(PLOT_WIDTH +10 ,PLOT_HEIGHT +10 ));
+//		spectra_thumbnail_panel.repaint();
 		spectra_thumbnail_panel.add(spectralPlotPanel);
-		spectra_thumbnail_panel.setMinimumSize(new java.awt.Dimension(PLOT_WIDTH,PLOT_HEIGHT));
+		spectra_thumbnail_panel.setVisible(true);
+		spectra_thumbnail_panel.setSize(new java.awt.Dimension(PLOT_WIDTH,PLOT_HEIGHT));
+		spectra_thumbnail_panel.setBorder(tb);	
+		query_panel_l.insertComponent(spectra_thumbnail_panel, constraints);
 
 		
 		constraints.gridx = 0;
-		constraints.gridy++;
+		constraints.gridy= 1;
 		
 		JPanel SQL_query_panel = new JPanel();
 		tb = BorderFactory.createTitledBorder(blackline, "Matching Spectra");
@@ -1169,9 +1174,11 @@ private class addSpectra extends Thread {
 	    		}
 	    		
 	    		asp.AddSpecralPlot(specchio_client, spaces_li, pr, spectralPlotPanel);
-	    		spectralPlotPanel.revalidate();
+	    		spectra_thumbnail_panel.add(spectralPlotPanel);
+	    		spectra_thumbnail_panel.validate();
+	    		spectra_thumbnail_panel.repaint();
+	    		spectralPlotPanel.validate();
 	    		spectralPlotPanel.repaint();
-//	    		pr.set_indeterminate(false);
 	    		pr.set_progress(100);
 			    pr.setVisible(false);
 	    	}
