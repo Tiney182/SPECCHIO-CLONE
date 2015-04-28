@@ -11,6 +11,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.sun.jersey.spi.StringReader.ValidateDefaultValue;
 
@@ -39,15 +41,15 @@ public class AddSpectralPlot {
 	public JPanel rootPanel = new JPanel();
 	public JFrame testFrame = new JFrame();
 	public ProgressReportDialog pr;
-	private int currentId = 1;
+//	private JSpinner spin;
+	private SpinnerModel sm;
+	private JSpinner spin;
+	private int current = 1;
 	
 	
 	public void AddSpecralPlot(SPECCHIOClient specchioClient, ArrayList<Space> spaces,ProgressReportDialog pr, JPanel spectralPlotPanel) throws SPECCHIOClientException {
 		this.specchioClient = specchioClient;
-		this.pr = pr;
-//		pr.setVisible(true);
-//		pr.set_progress(0);
-		
+		this.pr = pr;		
 		
 		spectrumEnum = new ArrayList<Integer>();
 		spectrumEnumSpaces = new ArrayList<Space>();
@@ -59,23 +61,40 @@ public class AddSpectralPlot {
 				spectrumEnumSpaces.add(space);
 			}
 		}
+		
+		sm = new SpinnerNumberModel(1, 1, spectrumEnum.size(),1 ); 
+	    spin = new JSpinner(sm);
+		
+	
+		
 		//Spinner number model
 		//http://stackoverflow.com/questions/15880844/how-to-limit-jspinner 
-		SpinnerModel sm = new SpinnerNumberModel(1, 0, spectrumEnum.size(),1 ); 
-		JSpinner spin = new JSpinner(sm);
-//		int index = 
-//		rootPanel.add(spin);
+		
+		ChangeListener listener = new ChangeListener() {				
+		      public void stateChanged(ChangeEvent e) {
+		    	  current = (Integer)spin.getValue();
+		    	  setDisplayedIndex(current);
+					rootPanel.add(spin);
+					rootPanel.revalidate();
+					rootPanel.repaint();			
+					int maxSpectra = spectrumEnum.size();
+					JLabel jl = new JLabel("of " + maxSpectra + " Spectra");
+					rootPanel.add(jl);
+		    	  }	
+		    };
+		 spin.addChangeListener(listener);
+		 
 		if (spectrumEnum.size() == 1) {
+			rootPanel.remove(spin);
 			setDisplayedIndex(1);
 		}
-		//TODO FIX ME
-		if (spectrumEnum.size() > 1){
-			int current = (Integer) spin.getValue() + 1;
-			int maxSpectra = spectrumEnum.size();
-			setDisplayedIndex(current);
-			rootPanel.revalidate();
-			rootPanel.repaint();
+		
+		if (spectrumEnum.size() > 1){		
+			setDisplayedIndex(1);
 			rootPanel.add(spin);
+			rootPanel.revalidate();
+			rootPanel.repaint();			
+			int maxSpectra = spectrumEnum.size();
 			JLabel jl = new JLabel("of " + maxSpectra + " Spectra");
 			rootPanel.add(jl);
 		}
@@ -86,6 +105,8 @@ public class AddSpectralPlot {
 		spectralPlotPanel.repaint();
 	
 	}
+	
+	
 	
 	public void setDisplayedIndex(int index) {
 		
