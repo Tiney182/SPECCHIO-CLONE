@@ -49,7 +49,7 @@ public class SPECCHIOApplication {
 		//readd this code and change all ot variables to op when returning to operations pane 
 		OperationsPane op = OperationsPane.getInstance();
 //		OperationsTest ot = OperationsTest.getInstance();
-		InternalPane ip = InternalPane.getInstance();
+//		InternalPane ip = InternalPane.getInstance();
 		ImageIcon i = new ImageIcon(SPECCHIOClientFactory.getApplicationConfFilename("SPECCHIO_Icon_Mid_Res_small.jpg"));
 		  
 		JLabel test = new JLabel("Spectral Database System", i, JLabel.CENTER);
@@ -63,7 +63,7 @@ public class SPECCHIOApplication {
 		mid_pane.add(BorderLayout.CENTER, test);
 
 		pane.add(mid_pane, BorderLayout.WEST);
-//		pane.add(op, BorderLayout.CENTER);
+		pane.add(op, BorderLayout.CENTER);
 		
 		pane.validate();
 

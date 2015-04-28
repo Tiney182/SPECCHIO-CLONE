@@ -607,7 +607,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		process.setEnabled(enabled);
 		spectral_plot.setEnabled(enabled);
 		refl.setEnabled(enabled);
-		show_maps.setEnabled(false);
+		show_maps.setEnabled(enabled);
 		
 	
 		if (publish_collection != null) {
@@ -964,12 +964,7 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		    			  split_spaces_by_sensor_and_unit.isSelected(),
 		    			  sdb.get_order_by_field());
 				thread.start();
-				endOperation();
-				if (unsorted_spectrum_ids.size() == 1){
-					show_maps.setEnabled(true);	
-				} else {
-					show_maps.setEnabled(false);
-				}		
+				endOperation();	
 			}
 			else
 			{
@@ -1116,66 +1111,38 @@ public class QueryBuilder extends JFrame  implements ActionListener, TreeSelecti
 		
 	}
 	
-private class addSpectra extends Thread {
-		
-		/** spectrum identifiers on which to report */
+	private class addSpectra extends Thread {
+	
 		private ArrayList<Integer> ids;
-		
-		/** split spaces by sensor */
 		private boolean bySensor;
-		
-		/** split spaces by sensor and unit */
-		private boolean bySensorAndUnit;
-		
-		/** field to order by */
+		private boolean bySensorAndUnit;		
 		private String orderBy;
-		
-		/**
-		 * Constructor.
-		 */
 		public addSpectra(ArrayList<Integer> idsIn, boolean bySensorIn, boolean bySensorAndUnitIn, String orderByIn)
 		{
-			// save parameters for later
 			ids = idsIn;
 			bySensor = bySensorIn;
 			bySensorAndUnit = bySensorAndUnitIn;
 			orderBy = orderByIn;			
 		}
 		
-		/**
-		 * Thread entry point.
-		 */
 		public void run()
 		{
-			//TODO
-	  	    // create a spectralPlot
-			ProgressReportDialog pr = new ProgressReportDialog(QueryBuilder.this, "Spectral Plot", false, 20);
-//			pr.set_operation("Building Spectra");
-//			pr.set_progress(0);
-//			pr.set_indeterminate(true);
-//			pr.setVisible(true);
 			AddSpectralPlot asp = new AddSpectralPlot();
 	    	try {
-	    		
-//	    		pr.set_operation("Identifying spaces");
 	    		Space spaces[] = specchio_client.getSpaces(
 	    				ids,
 	    				bySensor,
 	    				bySensorAndUnit,
 	    				orderBy
 	    			);
-	   
-	    		
-	    		
 	    		
 	    		ArrayList<Space> spaces_li = new ArrayList<Space>(spaces.length);
 	    		for (Space space : spaces) {
 	    			spaces_li.add(space);
 	    		}
-	    		asp.AddSpecralPlot(specchio_client, spaces_li, pr, spectralPlotPanel);
+	    		
+	    		asp.AddSpecralPlot(specchio_client, spaces_li, spectralPlotPanel);
 	    		spectra_thumbnail_panel.add(spectralPlotPanel);
-//	    		pr.set_progress(100);
-//			    pr.setVisible(false);
 	    	}
 	    	catch (SPECCHIOClientException ex) {
 		  		ErrorDialog error = new ErrorDialog(
@@ -1186,8 +1153,6 @@ private class addSpectra extends Thread {
 				    );
 			  	error.setVisible(true);
 		    }
-	    	
-//	    	pr.setVisible(false);
 		}
 		
 	}
@@ -1196,44 +1161,24 @@ private class addSpectra extends Thread {
 	 * Thread for building spectra and returning location data to be inserted into google maps
 	 */
 	private class MapsThread extends Thread {
-		
-		private String latitude = null;
-		private String longitude = null;
-
-		/** spectrum identifiers on which to report */
+		private ArrayList<Object> latitudeArray = null;
+		private ArrayList<Object> longitudeArray = null;
+		private ArrayList<Object> nameArray = null;
 		private ArrayList<Integer> ids;
-		
-		/**
-		 * Constructor.
-		 */
 		public MapsThread(ArrayList<Integer> idsIn)
 		{
-			// save parameters for later
 			ids = idsIn;
 			}
 		
-		/**
-		 * Thread entry point.
-		 */
 		public void run()
 		{
-	  	    // create a progress report
-			ProgressReportDialog pr = new ProgressReportDialog(QueryBuilder.this, "Getting Location Data", false, 20);
-			pr.set_operation("Opening report");
-			pr.set_progress(0);
-			pr.set_indeterminate(true);
-			pr.setVisible(true);
 			MapsProcessing maps = new MapsProcessing();
 			
-	    	try {	    		
-//	    		addSpectralPlot();
-	    		latitude = specchio_client.getMetaparameterValues(ids, "Latitude").toString();
-	    		longitude = specchio_client.getMetaparameterValues(ids, "Longitude").toString();
-	    		maps.no_location(latitude, longitude);	
-	    		maps.correct_location_data(latitude, longitude);
-	    		pr.set_progress(100);
-	    		pr.set_indeterminate(false);
-			    pr.setVisible(false);
+	    	try {	    	
+	    		latitudeArray = specchio_client.getMetaparameterValues(ids, "Latitude");
+	    		longitudeArray = specchio_client.getMetaparameterValues(ids, "Longitude");
+	    		nameArray = specchio_client.getMetaparameterValues(ids, "File Name");
+	    		maps.open_maps(nameArray, latitudeArray, longitudeArray);
 	    	}
 	    	catch (SPECCHIOClientException ex) {
 		  		ErrorDialog error = new ErrorDialog(
@@ -1244,9 +1189,7 @@ private class addSpectra extends Thread {
 				    );
 			  	error.setVisible(true);
 		    }
-	    	pr.setVisible(false);
-		}
-		
+		}		
 	}
 	
 	

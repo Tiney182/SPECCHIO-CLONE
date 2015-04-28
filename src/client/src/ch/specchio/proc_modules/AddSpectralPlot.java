@@ -7,26 +7,19 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.sun.jersey.spi.StringReader.ValidateDefaultValue;
-
 import ch.specchio.client.SPECCHIOClient;
 import ch.specchio.client.SPECCHIOClientException;
-import ch.specchio.gui.ProgressReportBarPanel;
 import ch.specchio.gui.ProgressReportDialog;
-import ch.specchio.gui.ProgressReportPanel;
-import ch.specchio.gui.SpectrumMetadataPanel;
 import ch.specchio.plots.swing.SpectralLinePlot;
 import ch.specchio.plots.swing.SpectralPlot;
 import ch.specchio.spaces.Space;
 import ch.specchio.spaces.SpectralSpace;
-import ch.specchio.gui.QueryBuilder;
 
 public class AddSpectralPlot {
 
@@ -41,15 +34,17 @@ public class AddSpectralPlot {
 	public JPanel rootPanel = new JPanel();
 	public JFrame testFrame = new JFrame();
 	public ProgressReportDialog pr;
-//	private JSpinner spin;
 	private SpinnerModel sm;
 	private JSpinner spin;
 	private int current = 1;
 	
 	
-	public void AddSpecralPlot(SPECCHIOClient specchioClient, ArrayList<Space> spaces,ProgressReportDialog pr, JPanel spectralPlotPanel) throws SPECCHIOClientException {
-		this.specchioClient = specchioClient;
-		this.pr = pr;		
+	public void AddSpecralPlot(SPECCHIOClient specchioClient, ArrayList<Space> spaces, JPanel spectralPlotPanel) throws SPECCHIOClientException {
+		this.specchioClient = specchioClient;		
+		
+		/** 
+		 * Creation of Hash Tables and ArrayLists for spectrum read in from QueryBuilder
+		 */
 		
 		spectrumEnum = new ArrayList<Integer>();
 		spectrumEnumSpaces = new ArrayList<Space>();
@@ -62,14 +57,21 @@ public class AddSpectralPlot {
 			}
 		}
 		
+		/** 
+		 * Creating of spinner and number model
+		 * The number model is limited to the amount of spectrum in the spectrumEnum array list as not to throw 
+		 * an out of bounds exception
+		 * Spinner number model taken from with own values set
+		 * http://stackoverflow.com/questions/15880844/how-to-limit-jspinner 
+		 */
 		sm = new SpinnerNumberModel(1, 1, spectrumEnum.size(),1 ); 
 	    spin = new JSpinner(sm);
-		
-	
-		
-		//Spinner number model
-		//http://stackoverflow.com/questions/15880844/how-to-limit-jspinner 
-		
+				
+		/** 
+		 * State Change listener used for the spinner
+		 * When the state is changed will update and repaint the rootPanel with the current displayed index
+		 */
+	    
 		ChangeListener listener = new ChangeListener() {				
 		      public void stateChanged(ChangeEvent e) {
 		    	  current = (Integer)spin.getValue();
@@ -84,11 +86,19 @@ public class AddSpectralPlot {
 		    };
 		 spin.addChangeListener(listener);
 		 
+		 /**
+		  * If there is only one spectra to be shown remove the spinner and set the displayed index to one
+		  */
+		 
 		if (spectrumEnum.size() == 1) {
 			rootPanel.remove(spin);
 			setDisplayedIndex(1);
 		}
 		
+		/** 
+		 * Creates the spectrum when the Enum list is greater than one
+		 * Adds the spinner that will be used during the state change 
+		 */
 		if (spectrumEnum.size() > 1){		
 			setDisplayedIndex(1);
 			rootPanel.add(spin);
@@ -98,12 +108,10 @@ public class AddSpectralPlot {
 			JLabel jl = new JLabel("of " + maxSpectra + " Spectra");
 			rootPanel.add(jl);
 		}
-		pr.set_progress(50);
 		spectralPlotPanel.add(rootPanel);
 		rootPanel.setVisible(true);
 		spectralPlotPanel.validate();
 		spectralPlotPanel.repaint();
-	
 	}
 	
 	
@@ -118,8 +126,6 @@ public class AddSpectralPlot {
 			
 			// get the loaded space object for this spectrum
 			if (!loadedSpaces.containsKey(space)) {
-				// need to load the space from the server
-				
 				loadedSpaces.put(space, (SpectralSpace)specchioClient.loadSpace(space));
 			}
 			SpectralSpace ss = loadedSpaces.get(space);
@@ -127,7 +133,6 @@ public class AddSpectralPlot {
 			// plot the spectrum
 			rootPanel.removeAll();
 			if (!spectralPlots.containsKey(ss)) {
-				// need to build the plot object for this space
 				spectralPlots.put(ss, new SpectralLinePlot(ss, PLOT_WIDTH, PLOT_HEIGHT, null));
 			}
 			SpectralPlot sp = spectralPlots.get(ss);
