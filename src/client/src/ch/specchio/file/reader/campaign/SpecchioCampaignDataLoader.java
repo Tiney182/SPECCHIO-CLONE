@@ -4,6 +4,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
+import javax.swing.JProgressBar;
+import javax.swing.JTextArea;
+
 import ch.specchio.client.SPECCHIOClient;
 import ch.specchio.client.SPECCHIOClientException;
 import ch.specchio.file.reader.spectrum.*;
@@ -17,17 +20,22 @@ public class SpecchioCampaignDataLoader extends CampaignDataLoader {
 	
 	private SPECCHIOClient specchio_client;
 	private SpectralFileLoader sfl;
-
+	
+	protected JProgressBar progress_bar;
+	protected JTextArea progress_text;
+	
 	private int root_hierarchy_id;
 	
 	ArrayList<String> file_errors = new ArrayList<String>();
 	private int successful_file_counter;
 
 
-	public SpecchioCampaignDataLoader(CampaignDataLoaderListener listener, SPECCHIOClient specchio_client) {
+	public SpecchioCampaignDataLoader(CampaignDataLoaderListener listener, SPECCHIOClient specchio_client,JProgressBar progress_bar, JTextArea progress_text) {
 		super(listener);
 		
 		this.specchio_client = specchio_client;
+		this.progress_bar = progress_bar;
+		this.progress_text = progress_text;
 
 	}
 
@@ -37,10 +45,10 @@ public class SpecchioCampaignDataLoader extends CampaignDataLoader {
 			
 			// clear EAV known metadata entries because some delete operation might have happened in the meantime
 			specchio_client.clearMetaparameterRedundancyList();
-
+			
 			// tell the listener that we're about to begin
 			listener.campaignDataLoading();
-			
+
 			// update the campaign data on the server
 			specchio_client.updateCampaign(campaign);
 
@@ -79,9 +87,10 @@ public class SpecchioCampaignDataLoader extends CampaignDataLoader {
 	// file system to be read
 	void load_directory(int parent_id, File dir, boolean parent_garbage_flag) throws SPECCHIOClientException, FileNotFoundException {
 		int hierarchy_id = 0;
-		ArrayList<File> files, directories;
+		ArrayList<File> files, directories, checkfiles;
 		SpectralFile spec_file;
 		boolean is_garbage = parent_garbage_flag;
+		String appender;
 		
 		// Garbage detection: all data that are under a folder called 'Garbage' will get an EAV garbage flag
 		// this allows users to load also suboptimal (i.e. garbage) data into the database, but easily exclude them from any selection
@@ -117,6 +126,7 @@ public class SpecchioCampaignDataLoader extends CampaignDataLoader {
 		// create array to store the File objects in
 		directories = new ArrayList<File>();
 		files = new ArrayList<File>();
+		checkfiles = new ArrayList<File>();
 
 		// get the number of files and subdirectories in the current
 		// directory
@@ -156,8 +166,7 @@ public class SpecchioCampaignDataLoader extends CampaignDataLoader {
 			load_directory(hierarchy_id, curr_dir, parent_garbage_flag);
 		}
 
-		// load each file using the spectral
-		// file loader
+		// load each file using the spectral file loader
 		if (files.size() > 0) {	
 			
 			
@@ -229,7 +238,6 @@ public class SpecchioCampaignDataLoader extends CampaignDataLoader {
 				sfs.setSpectral_file_list(spectral_light_file_list);
 				sfs.setCampaignId(campaign.getId());
 				sfs.setCampaignType(campaign.getType());	
-				
 				boolean[] exists_array = specchio_client.spectralFilesExist(sfs);
 				
 				
@@ -314,10 +322,19 @@ public class SpecchioCampaignDataLoader extends CampaignDataLoader {
 //		
 //		// if it doesn't exist, upload it
 //		if (!exists) {
+			String append;
 			spec_file.setCampaignType(campaign.getType());
+//			append = "Setting Campaign Type: " + campaign.getType();
+//			progress_text.append(append + "\n");
 			spec_file.setCampaignId(campaign.getId());
+//			append = "Setting Campaign Id: " + campaign.getId();
+//			progress_text.append(append + "\n");
 			spec_file.setHierarchyId(hierarchy_id);
+//			append = "Setting Heirarchy ID: " + hierarchy_id;
+//			progress_text.append(append + "\n");
 			results = specchio_client.insertSpectralFile(spec_file);
+			append = results.toString();
+			progress_text.append("Inserted: " + append + "\n");
 			
 //			ids = new int[results.size()];
 //			for (int i = 0; i < results.size(); i++) {
@@ -328,7 +345,18 @@ public class SpecchioCampaignDataLoader extends CampaignDataLoader {
 		return results;
 		
 	}
-
+	
+	//TODO
+	public void update_progress_bar(){
+		String test;
+		progress_bar.setIndeterminate(true);
+		for (int i = 0; i<10000; i++){
+			test = "hello " + i  +"\n";
+			progress_text.append(test);
+		}
+	}
+	
+	
 	public int insert_hierarchy(String name, Integer parent_id) throws SPECCHIOClientException {
 		
 		// see if the node already exists

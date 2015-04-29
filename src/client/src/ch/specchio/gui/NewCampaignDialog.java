@@ -28,6 +28,12 @@ public class NewCampaignDialog extends JFrame implements ActionListener
 	JFrame app_frame;
 	SPECCHIOClient specchio_client;
 	
+	//need be shown and hidden must instantiate now 
+	protected JProgressBar progress_bar = new JProgressBar();
+	protected JTextArea progress_text = new JTextArea();
+	protected JSeparator seperate = new JSeparator();
+	protected JScrollPane text_scroll = new JScrollPane(progress_text);
+	
 	
 	public NewCampaignDialog(Campaign c, JFrame app_frame) throws SPECCHIOClientException
 	{
@@ -39,6 +45,7 @@ public class NewCampaignDialog extends JFrame implements ActionListener
 		
 		this.campaign = c;
 		this.app_frame = app_frame;
+		
 		
 		fc = new JFileChooser();
 		l = new GridbagLayouter(this);
@@ -90,7 +97,7 @@ public class NewCampaignDialog extends JFrame implements ActionListener
 		create.addActionListener(this);
 		
 		constraints.gridx = 2;
-		JButton create_and_load = new JButton("Create&Load");
+		JButton create_and_load = new JButton("Create & Load");
 		l.insertComponent(create_and_load, constraints);
 		create_and_load.setActionCommand("create_and_load");
 		create_and_load.addActionListener(this);		
@@ -100,6 +107,28 @@ public class NewCampaignDialog extends JFrame implements ActionListener
 		l.insertComponent(cancel , constraints);
 		cancel.setActionCommand("cancel");
 		cancel.addActionListener(this);
+		
+		constraints.gridy = 3;
+		constraints.gridx = 0;
+		constraints.gridwidth = 4;
+		l.insertComponent(seperate, constraints);
+		seperate.setVisible(true);
+		
+		constraints.gridy = 4;
+		constraints.gridx = 0;
+		constraints.gridwidth = 4;
+		l.insertComponent(progress_bar, constraints);
+		progress_bar.setVisible(true);
+		
+		constraints.gridy = 5;
+		constraints.gridx = 0;
+		constraints.gridwidth = 4;
+		constraints.ipady = 60;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		progress_text.setEditable(false);
+		l.insertComponent(text_scroll, constraints);
+		text_scroll.setVisible(true);
+		text_scroll.setPreferredSize(new java.awt.Dimension(350,60));
 		
 		
 		pack();
@@ -115,7 +144,11 @@ public class NewCampaignDialog extends JFrame implements ActionListener
 	public void actionPerformed(ActionEvent e) {
 		
 		if ("cancel".equals(e.getActionCommand())) {
-			this.setVisible(false);
+//			this.setVisible(false);
+			
+			SpecchioCampaignDataLoader cdl = new SpecchioCampaignDataLoader(new LoadCampaignDataHandler(),specchio_client,progress_bar,progress_text);
+			cdl.update_progress_bar();
+			
 		} 
 		if ("browse".equals(e.getActionCommand())) {
 			
@@ -144,16 +177,16 @@ public class NewCampaignDialog extends JFrame implements ActionListener
 				if ("create_and_load".equals(e.getActionCommand())) {
 						
 					// load the campaign data
-					SpecchioCampaignDataLoader cdl = new SpecchioCampaignDataLoader(new LoadCampaignDataHandler(), specchio_client);
+					SpecchioCampaignDataLoader cdl = new SpecchioCampaignDataLoader(new LoadCampaignDataHandler(),specchio_client,progress_bar,progress_text);
 					cdl.set_campaign(campaign);
 					cdl.start();
 					
 					// close the dialog
-					this.setVisible(false);
+//					this.setVisible(false);
 				}
 				
 				// report success
-				JOptionPane.showMessageDialog(app_frame, "New campaign '" + study_name.getText() + "' created successfully.");
+//				JOptionPane.showMessageDialog(app_frame, "New campaign '" + study_name.getText() + "' created successfully.");
 			}
 			catch (SPECCHIOClientException ex) {
 				JOptionPane.showMessageDialog(
