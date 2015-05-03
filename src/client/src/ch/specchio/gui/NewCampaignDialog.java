@@ -7,8 +7,6 @@ import java.io.File;
 
 import javax.swing.*;
 
-import com.google.common.util.concurrent.MoreExecutors;
-
 import ch.specchio.client.SPECCHIOClient;
 import ch.specchio.client.SPECCHIOClientException;
 import ch.specchio.file.reader.campaign.SpecchioCampaignDataLoader;

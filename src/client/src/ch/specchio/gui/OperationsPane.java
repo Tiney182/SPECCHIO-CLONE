@@ -8,6 +8,46 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneLayout;
 
+class ReportContainer extends JPanel{
+
+	private static final long serialVersionUID = 1L;
+
+	GridbagLayouter l;
+	
+	public ReportContainer ()
+	{
+		l = new GridbagLayouter(this);	
+	}
+}
+
+
+class ReportRemover extends Thread
+{
+	ReportContainer frame; 
+	ProgressReportPanel rep;
+	OperationsPane op;
+	
+	public ReportRemover(OperationsPane op, ReportContainer frame, ProgressReportPanel rep)
+	{
+		this.frame = frame;
+		this.rep = rep;		
+		this.op = op;
+	}
+	
+	public void run () 
+	{				
+		try {
+			sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("remove component");
+		frame.remove(rep);
+		frame.repaint();
+	}
+
+}
 // uses the Singleton Pattern
 public class OperationsPane extends JScrollPane {
 
