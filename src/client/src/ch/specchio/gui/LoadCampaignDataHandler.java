@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -115,7 +116,6 @@ public class LoadCampaignDataHandler implements CampaignDataLoaderListener {
 
 		p_rep.set_progress(fileCount);
 		p_spectra_insert_rep.set_progress(spectrumCount);
-		
 	}
 	
 	

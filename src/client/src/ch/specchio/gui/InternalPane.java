@@ -99,7 +99,6 @@ public class InternalPane extends JScrollPane {
 			   String num = Integer.toString(i);
 			   JButton number = new JButton(num);
 			   frame.add(number); 
-			   
 			}
 		this.validate();
 	   }

@@ -144,10 +144,10 @@ public class NewCampaignDialog extends JFrame implements ActionListener
 	public void actionPerformed(ActionEvent e) {
 		
 		if ("cancel".equals(e.getActionCommand())) {
-//			this.setVisible(false);
+			this.setVisible(false);
 			
-			SpecchioCampaignDataLoader cdl = new SpecchioCampaignDataLoader(new LoadCampaignDataHandler(),specchio_client,progress_bar,progress_text);
-			cdl.update_progress_bar();
+//			SpecchioCampaignDataLoader cdl = new SpecchioCampaignDataLoader(new LoadCampaignDataHandler(),specchio_client,progress_bar,progress_text);
+//			cdl.update_progress_bar();
 			
 		} 
 		if ("browse".equals(e.getActionCommand())) {
@@ -177,6 +177,7 @@ public class NewCampaignDialog extends JFrame implements ActionListener
 				if ("create_and_load".equals(e.getActionCommand())) {
 						
 					// load the campaign data
+					progress_bar.setIndeterminate(true);
 					SpecchioCampaignDataLoader cdl = new SpecchioCampaignDataLoader(new LoadCampaignDataHandler(),specchio_client,progress_bar,progress_text);
 					cdl.set_campaign(campaign);
 					cdl.start();

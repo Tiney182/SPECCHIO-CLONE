@@ -330,11 +330,12 @@ public class SpecchioCampaignDataLoader extends CampaignDataLoader {
 //			append = "Setting Campaign Id: " + campaign.getId();
 //			progress_text.append(append + "\n");
 			spec_file.setHierarchyId(hierarchy_id);
-//			append = "Setting Heirarchy ID: " + hierarchy_id;
-//			progress_text.append(append + "\n");
+			append = "Setting Heirarchy ID: " + hierarchy_id;
+			progress_text.append(append + "\n");
 			results = specchio_client.insertSpectralFile(spec_file);
 			append = results.toString();
 			progress_text.append("Inserted: " + append + "\n");
+			progress_text.setCaretPosition(progress_text.getDocument().getLength());
 			
 //			ids = new int[results.size()];
 //			for (int i = 0; i < results.size(); i++) {
