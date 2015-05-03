@@ -29,7 +29,6 @@ import ch.specchio.client.SPECCHIOClientFactory;
 public class DatabaseConnectionDialog extends JFrame implements ActionListener 
 {
 	private static final long serialVersionUID = 1L;
-	InternalPane ip = new InternalPane();
 	GridbagLayouter l;
 	SPECCHIOClientFactory cf;
 	JTextField server, port, database, user;

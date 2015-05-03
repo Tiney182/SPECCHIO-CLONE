@@ -4,7 +4,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+
 import javax.swing.*;
+
+import com.google.common.util.concurrent.MoreExecutors;
 
 import ch.specchio.client.SPECCHIOClient;
 import ch.specchio.client.SPECCHIOClientException;
@@ -29,7 +32,6 @@ public class NewCampaignDialog extends JFrame implements ActionListener
 	SPECCHIOClient specchio_client;
 	
 	//need be shown and hidden must instantiate now 
-	protected JProgressBar progress_bar = new JProgressBar();
 	protected JTextArea progress_text = new JTextArea();
 	protected JSeparator seperate = new JSeparator();
 	protected JScrollPane text_scroll = new JScrollPane(progress_text);
@@ -108,26 +110,22 @@ public class NewCampaignDialog extends JFrame implements ActionListener
 		cancel.setActionCommand("cancel");
 		cancel.addActionListener(this);
 		
+		
 		constraints.gridy = 3;
 		constraints.gridx = 0;
 		constraints.gridwidth = 4;
 		l.insertComponent(seperate, constraints);
-		seperate.setVisible(true);
+		seperate.setVisible(false);
 		
+				
 		constraints.gridy = 4;
-		constraints.gridx = 0;
-		constraints.gridwidth = 4;
-		l.insertComponent(progress_bar, constraints);
-		progress_bar.setVisible(true);
-		
-		constraints.gridy = 5;
 		constraints.gridx = 0;
 		constraints.gridwidth = 4;
 		constraints.ipady = 60;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		progress_text.setEditable(false);
 		l.insertComponent(text_scroll, constraints);
-		text_scroll.setVisible(true);
+		text_scroll.setVisible(false);
 		text_scroll.setPreferredSize(new java.awt.Dimension(350,60));
 		
 		
@@ -145,9 +143,6 @@ public class NewCampaignDialog extends JFrame implements ActionListener
 		
 		if ("cancel".equals(e.getActionCommand())) {
 			this.setVisible(false);
-			
-//			SpecchioCampaignDataLoader cdl = new SpecchioCampaignDataLoader(new LoadCampaignDataHandler(),specchio_client,progress_bar,progress_text);
-//			cdl.update_progress_bar();
 			
 		} 
 		if ("browse".equals(e.getActionCommand())) {
@@ -167,6 +162,9 @@ public class NewCampaignDialog extends JFrame implements ActionListener
 			
 			try {
 				// configure the campaign object
+				seperate.setVisible(true);
+				text_scroll.setVisible(true);
+				this.pack();
 				campaign.setName(study_name.getText());
 				campaign.setPath(main_directory.getText());
 				
@@ -177,17 +175,11 @@ public class NewCampaignDialog extends JFrame implements ActionListener
 				if ("create_and_load".equals(e.getActionCommand())) {
 						
 					// load the campaign data
-					progress_bar.setIndeterminate(true);
-					SpecchioCampaignDataLoader cdl = new SpecchioCampaignDataLoader(new LoadCampaignDataHandler(),specchio_client,progress_bar,progress_text);
+					SpecchioCampaignDataLoader cdl = new SpecchioCampaignDataLoader(new LoadCampaignDataHandler(),specchio_client,progress_text);
 					cdl.set_campaign(campaign);
 					cdl.start();
-					
-					// close the dialog
-//					this.setVisible(false);
 				}
 				
-				// report success
-//				JOptionPane.showMessageDialog(app_frame, "New campaign '" + study_name.getText() + "' created successfully.");
 			}
 			catch (SPECCHIOClientException ex) {
 				JOptionPane.showMessageDialog(
@@ -200,7 +192,7 @@ public class NewCampaignDialog extends JFrame implements ActionListener
 			
 		}
 		
-	} 
+	}
 	
 	
 }

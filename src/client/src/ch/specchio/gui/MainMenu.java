@@ -35,8 +35,7 @@ import ch.specchio.types.attribute;
 
 class MainMenu implements ActionListener, ItemListener {
 
-	InternalPane ip = new InternalPane();
-	URI uri;
+   URI uri;
    JMenuBar menuBar;
    String create_new_campaign = "Create new campaign";
    String load_campaign_data = "Load campaign data";

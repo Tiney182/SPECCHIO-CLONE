@@ -129,18 +129,6 @@ public class SPECCHIOApplication {
 		   );
 	   }
 	   
-	   public void setInternalPane(SPECCHIOClient client){
-		   this.client = client;
-		   
-		   InternalPane ip = InternalPane.getInstance();
-		   if (client != null){
-			   if (pane != null){
-				   ip.test_panel();
-				   pane.add(ip.frame, BorderLayout.CENTER);
-				   pane.validate();
-			   }
-		   }
-	   }
 	   
 	   
 	   public void setClient(SPECCHIOClient client) {

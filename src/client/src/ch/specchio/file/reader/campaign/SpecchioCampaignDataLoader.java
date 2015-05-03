@@ -30,13 +30,12 @@ public class SpecchioCampaignDataLoader extends CampaignDataLoader {
 	private int successful_file_counter;
 
 
-	public SpecchioCampaignDataLoader(CampaignDataLoaderListener listener, SPECCHIOClient specchio_client,JProgressBar progress_bar, JTextArea progress_text) {
+	public SpecchioCampaignDataLoader(CampaignDataLoaderListener listener, SPECCHIOClient specchio_client, JTextArea progress_text) {
 		super(listener);
 		
 		this.specchio_client = specchio_client;
 		this.progress_bar = progress_bar;
 		this.progress_text = progress_text;
-
 	}
 
 	// the actual code for loading a campaign
@@ -324,11 +323,9 @@ public class SpecchioCampaignDataLoader extends CampaignDataLoader {
 //		if (!exists) {
 			String append;
 			spec_file.setCampaignType(campaign.getType());
-//			append = "Setting Campaign Type: " + campaign.getType();
-//			progress_text.append(append + "\n");
 			spec_file.setCampaignId(campaign.getId());
-//			append = "Setting Campaign Id: " + campaign.getId();
-//			progress_text.append(append + "\n");
+			append = "File ID : " + spec_file.getFilename();
+			progress_text.append(append + "\n");
 			spec_file.setHierarchyId(hierarchy_id);
 			append = "Setting Heirarchy ID: " + hierarchy_id;
 			progress_text.append(append + "\n");
@@ -337,9 +334,6 @@ public class SpecchioCampaignDataLoader extends CampaignDataLoader {
 			progress_text.append("Inserted: " + append + "\n");
 			progress_text.setCaretPosition(progress_text.getDocument().getLength());
 			
-//			ids = new int[results.size()];
-//			for (int i = 0; i < results.size(); i++) {
-//				ids[i] = results.get(i);
 //			}
 //		} 
 		
@@ -347,22 +341,12 @@ public class SpecchioCampaignDataLoader extends CampaignDataLoader {
 		
 	}
 	
-	//TODO
-	public void update_progress_bar(){
-		String test;
-		progress_bar.setIndeterminate(true);
-		for (int i = 0; i<10000; i++){
-			test = "hello " + i  +"\n";
-			progress_text.append(test);
-		}
-	}
 	
 	
 	public int insert_hierarchy(String name, Integer parent_id) throws SPECCHIOClientException {
 		
 		// see if the node already exists
 		Integer id = specchio_client.getHierarchyId(campaign, name, parent_id);
-		
 		if (id == -1) {
 			// the node doesn't exist; insert it
 			id = specchio_client.insertHierarchy(campaign, name, parent_id);
@@ -553,6 +537,7 @@ public class SpecchioCampaignDataLoader extends CampaignDataLoader {
 		// set the file format id according to the file format name and the database
 		if (loader != null) {
 			int file_format_id = specchio_client.getFileFormatId(loader.get_file_format_name());
+			progress_text.append("Getting Files: \n" + files.toString() + "\n");
 			loader.set_file_format_id(file_format_id);
 		}
 

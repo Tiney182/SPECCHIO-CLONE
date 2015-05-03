@@ -62,7 +62,6 @@ public class LoadCampaignDataDialog extends JDialog implements ActionListener {
 	/** text for the "cancel" button */
 	private static final String CANCEL = "Cancel";
 	
-	private JProgressBar progress_bar;
 	private JTextArea progress_text;
 	/**
 	 * Constructor.
@@ -174,7 +173,7 @@ public class LoadCampaignDataDialog extends JDialog implements ActionListener {
 			if (campaign != null && file != null) {
 				
 				// set up a campaign data loader
-				SpecchioCampaignDataLoader cdl = new SpecchioCampaignDataLoader(new LoadCampaignDataHandler(), specchioClient, progress_bar,progress_text);
+				SpecchioCampaignDataLoader cdl = new SpecchioCampaignDataLoader(new LoadCampaignDataHandler(), specchioClient,progress_text);
 				
 				// load campaign data
 				campaign.setPath(file.toString());

@@ -62,15 +62,16 @@ public class LoadCampaignDataHandler implements CampaignDataLoaderListener {
 	 */
 	public void campaignDataLoaded(int num_files, int num_spectra, List<String> file_errors) {
 
-		OperationsPane op = OperationsPane.getInstance();
+//		OperationsPane op = OperationsPane.getInstance();
 		p_rep.set_operation("Done!");
-		op.remove_report(p_rep);
+//		op.remove_report(p_rep);
 
 		p_spectra_insert_rep.set_operation("Done!");
-		op.remove_report(p_spectra_insert_rep);
+//		op.remove_report(p_spectra_insert_rep);
 
 		SPECCHIOApplication app = SPECCHIOApplication.getInstance();
-		JOptionPane.showMessageDialog(app.get_frame(), num_files + " files processed, " + num_spectra + " spectra inserted.");
+//		JOptionPane.showMessageDialog(app.get_frame(), num_files + " files processed, " + num_spectra + " spectra inserted.");
+		
 		
 		if (file_errors.size()>0)
 		{
